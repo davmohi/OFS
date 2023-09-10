@@ -1,3 +1,6 @@
+//to run this file, use the command: npm run dev
+
+
 "use client";
 import Image from 'next/image'
 import styles from './page.module.css'
