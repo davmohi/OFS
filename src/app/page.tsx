@@ -13,7 +13,8 @@ import React, { useState } from 'react'
 
 export default function Home() {
   const [transpiledCode, setTranspiledCode] = useState<string>('');
-  const [responseText, setResponseText] = useState<string>('');
+  const [response, setResponse] = useState<string>('');
+  
   return (
     <div>
         <Header />
@@ -25,13 +26,13 @@ export default function Home() {
                           <EditorArea setTranspiledCode={setTranspiledCode} />
                         </td>
                         <td className="half-width">
-                          <TranspilationArea transpiledCode={transpiledCode} />
+                          <TranspilationArea transpiledCode={transpiledCode} setResponse={setResponse} />
                         </td>
                     </tr>
                 </tbody>
             </table>
         </div>
-        <ResponseArea responseText={responseText} />
+        <ResponseArea responseText={response} />
     </div>
   )
 }
