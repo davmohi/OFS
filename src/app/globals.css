@@ -10,6 +10,7 @@
 }
 
 .response-textarea {
+  color: black;
   width: 100%;
   height: 300px;
   padding: 10px;
@@ -55,17 +56,12 @@
 }
 
 .compile-button {
-  background-color: #007BFF; /* Color de fondo del botón */
   color: white; /* Color del texto del botón */
   border: none;
   padding: 5px 10px;
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s; /* Transición suave al cambiar el color de fondo */
-}
-
-.compile-button:hover {
-  background-color: #0056b3; /* Color de fondo más oscuro al pasar el cursor sobre el botón */
 }
 
 .editor-container {
