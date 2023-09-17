@@ -30,32 +30,77 @@ const EditorArea: React.FC<{ setTranspiledCode: (code: string) => void }> = ({ s
 
     const guardar = async () => {
         try {
-            await fetch('/api/guardar', {
+            // Primero, verifica si el archivo ya existe
+            const checkResponse = await fetch(`/api/script?id=${inputValue}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+    
+            // Si el archivo ya existe
+            if (checkResponse.ok) {
+                const overwrite = window.confirm('El archivo ya existe. ¿Desea sobreescribirlo?');
+                if (!overwrite) {
+                    return; // Si el usuario selecciona "No", termina la función
+                }
+            }
+    
+            // Realiza la solicitud POST para guardar o sobrescribir el archivo
+            const response = await fetch('/api/script', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ content: editorContent, inputText: inputValue })
+                body: JSON.stringify({ content: editorContent, id: inputValue })
             });
+    
+            if (response.ok) {
+                alert('Script guardado exitosamente');
+            } else {
+                alert('No se pudo guardar el script');
+            }
         } catch (error) {
             console.error("Error al guardar", error);
+            alert('No se pudo guardar el script');
         }
     };
+    
 
     const cargar = async () => {
         try {
-            const response = await fetch(`/api/cargar`, {
-                method: 'POST',
+            const response = await fetch(`/api/script?id=${inputValue}`, {
+                method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ inputText: inputValue })
+                }
             });
-            const data = await response.text();
-            setEditorContent(data);
+            if (!response.ok) {
+                alert('No se pudo encontrar el script')
+            }
+            else {
+                const data = await response.json()
+                setEditorContent(data.content)
+            }
         } catch (error) {
             console.error("Error al cargar", error);
         }
+    };
+    
+    const updateLineNumbers = () => {
+        const lines = editorContent.split('\n').length;
+        let lineNumbers = '';
+        for (let i = 1; i <= lines; i++) {
+            lineNumbers += i + '\n';
+        }
+        return lineNumbers;
+    };
+    
+    const [lineNumbers, setLineNumbers] = useState(updateLineNumbers());
+    
+    const handleEditorChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        setEditorContent(e.target.value);
+        setLineNumbers(updateLineNumbers());
     };
 
     return (
@@ -78,12 +123,17 @@ const EditorArea: React.FC<{ setTranspiledCode: (code: string) => void }> = ({ s
                     <img src="/compile-icon.png" alt="Compile" />
                 </button>
             </div>
-            <textarea
-                className="editor-textarea"
-                value={editorContent}
-                onChange={(e) => setEditorContent(e.target.value)}
-                placeholder="Escribe tu código aquí..."
-            />
+            <div className="editor-content">
+                <div className="line-numbers">
+                    <pre>{lineNumbers}</pre>
+                </div>
+                <textarea
+                    className="editor-textarea"
+                    value={editorContent}
+                    onChange={handleEditorChange}
+                    placeholder="Escribe tu código aquí..."
+                />
+            </div>
         </div>
     );
 };

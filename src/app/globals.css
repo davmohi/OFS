@@ -45,31 +45,65 @@
 
 /* estilo para EA */
 
+pre {
+  line-height: 18.2px;
+}
+
+
+.editor-content { /* Estilos para el nuevo contenedor */
+  display: flex;
+}
+
 .editor-header {
-  display: flex; /* Usa flexbox */
-  justify-content: space-between; /* Espacio entre el título y el botón */
-  align-items: center; /* Alinea verticalmente el título y el botón */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .editor-title {
-  margin: 0; /* Elimina el margen para que el título y el botón estén alineados */
+  margin: 0;
 }
 
 .compile-button {
-  color: white; /* Color del texto del botón */
+  color: white;
   border: none;
   padding: 5px 10px;
   border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s; /* Transición suave al cambiar el color de fondo */
+  transition: background-color 0.3s;
 }
 
 .editor-container {
   margin: 20px 0;
-  padding: 20px;
+  padding: 20px 0;
   border: 1px solid #ccc;
   border-radius: 5px;
   position: relative;
+}
+
+.line-numbers {
+  margin-top: 13px;
+  background-color: #f5f5f5;
+  color: #999;
+  text-align: right;
+  padding-right: 5px;
+  user-select: none;
+  border-right: 1px solid #ccc;
+  width: 30px;
+  overflow: hidden;
+  flex-shrink: 0; /* Evita que el contenedor de números de línea se reduzca */
+}
+
+.editor-textarea {
+  width: calc(100% - 30px); /* Ajusta el ancho para tener en cuenta el contenedor de números de línea */
+  height: 300px;
+  padding: 10px;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  resize: vertical;
+  flex-grow: 1; /* Permite que el textarea crezca para ocupar el espacio restante */
 }
 
 .table-container table {
@@ -79,20 +113,10 @@
 
 .half-width {
   width: 50%;
-  vertical-align: top; /* Alinea el contenido de la celda en la parte superior */
-  padding: 10px; /* Espacio alrededor del contenido de la celda */
+  vertical-align: top;
+  padding: 10px;
 }
 
-.editor-textarea {
-  width: 100%;
-  height: 300px;
-  padding: 10px;
-  font-family: 'Courier New', Courier, monospace;
-  font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  resize: vertical;
-}
 
 
 /* Estilos para el header */
