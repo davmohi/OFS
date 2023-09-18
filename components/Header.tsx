@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 
 const Header: React.FC = () => {
-    const [showAbout, setShowAbout] = useState(false);
+    const [showAbout, setShowAbout] = useState<boolean>(false);
     const [teamInfo, setTeamInfo] = useState<any>(null);
 
     const fetchAboutInfo = async () => {
@@ -26,7 +26,7 @@ const Header: React.FC = () => {
 
     return (
         <div className="header-container">
-            <h1 className="header-title">OFS Playground</h1>
+            <h1 className="header-title">ONE FLOW STREAM</h1>
             <button className="btn-about" onClick={handleAboutClick}>About</button>
             {showAbout && (
                 <div className="modal">

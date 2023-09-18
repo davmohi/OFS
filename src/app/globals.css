@@ -31,6 +31,12 @@
   border-radius: 5px;
 }
 
+.transpilation-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .transpilation-textarea {
   width: 100%;
   height: 300px;
@@ -128,12 +134,12 @@ pre {
 }
 
 .header-title {
+  color: black;
   font-size: 24px;
   margin: 0; /* Elimina el margen para que el título esté centrado */
 }
 
 .btn-about {
-  background-color: #007BFF; /* Color de fondo del botón */
   color: white; /* Color del texto del botón */
   border: none;
   padding: 10px 20px;

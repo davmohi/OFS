@@ -2,8 +2,6 @@
 
 
 "use client";
-import Image from 'next/image'
-import styles from './page.module.css'
 import Header from '../../components/Header'
 import EditorArea from '../../components/EditorArea'
 import TranspilationArea from '../../components/TranspilationArea'

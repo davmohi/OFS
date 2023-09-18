@@ -29,7 +29,7 @@ const TranspilationArea: React.FC<Props> = ({ transpiledCode, setResponse }) => 
     
     return (
         <div className="transpilation-container">
-            <div className="header">
+            <div className="transpilation-header">
                 <h3>Área de Transpilación</h3>
                 <button onClick={handleEvalClick}>Evaluar</button>
             </div>
