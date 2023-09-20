@@ -1,5 +1,5 @@
 // components/TranspilationArea.tsx
-import React, { useState } from 'react';
+import React from 'react';
 
 interface Props {
     transpiledCode: string;

@@ -151,9 +151,6 @@ pre {
   right: 20px; /* Alinea el botón con el padding del contenedor */
 }
 
-.btn-about:hover {
-  background-color: #0056b3; /* Color de fondo más oscuro al pasar el cursor sobre el botón */
-}
 
 .modal {
   text-align: center;

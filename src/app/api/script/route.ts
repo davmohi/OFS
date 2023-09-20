@@ -2,7 +2,6 @@ import { NextResponse } from 'next/server';
 import { promises as fs } from 'fs';
 import { join } from 'path';
 import { parse as parseUrl } from 'url';
-import querystring from 'querystring';
 
 const filesDirectory = join(process.cwd(), 'codigos');
 
