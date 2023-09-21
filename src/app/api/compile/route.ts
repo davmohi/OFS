@@ -9,7 +9,7 @@ export const POST = async (req: Request) => {
     const timestamp = new Date().toISOString()
     //join the data with the timestamp
 
-    const responseData = ''+value+'\n'+timestamp
+    const responseData = `${timestamp}\n${value}`
     return NextResponse.json(responseData, { status: 200 });
   } catch (error) {
     return NextResponse.json({ message: "Error", error }, { status: 500 })

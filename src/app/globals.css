@@ -67,7 +67,7 @@ pre {
 }
 
 .editor-title {
-  margin: 0;
+  margin-left: 30px;
 }
 
 .compile-button {
@@ -88,8 +88,8 @@ pre {
 }
 
 .line-numbers {
-  margin-top: 13px;
-  background-color: #f5f5f5;
+  margin-top: 10px;
+  background-color: #000000;
   color: #999;
   text-align: right;
   padding-right: 5px;
