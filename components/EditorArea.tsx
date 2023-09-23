@@ -13,6 +13,7 @@ const EditorArea: React.FC<{ setTranspiledCode: (code: string) => void }> = ({ s
     const [isSaved, setIsSaved] = useState(false);
     const [compileRequested, setCompileRequested] = useState(false); //Estado del component CompilerButton 
     const [saveOnClick, setSaveOnClick] = useState(false);//Estado del component SaveButton
+    
     const lineNumbersRef = useRef(null);
     const editorTextareaRef = useRef(null);
 
@@ -119,6 +120,51 @@ const EditorArea: React.FC<{ setTranspiledCode: (code: string) => void }> = ({ s
         }
     };
 
+    useEffect(() => {
+        const lineNumbers = lineNumbersRef.current;
+        const editorTextarea = editorTextareaRef.current;
+        
+    
+        if (lineNumbers && editorTextarea) {
+          // Crea una nueva instancia de ResizeObserver y observa los cambios en el tamaño del textarea
+          const resizeObserver = new ResizeObserver(() => {
+            // Obtiene la altura del textarea
+            const textareaHeight = editorTextarea.clientHeight;
+    
+            // Ajusta la altura del div .line-numbers para que sea la misma que la del textarea
+            lineNumbers.style.height = `${textareaHeight-10}px`;
+          });
+    
+          // Comienza a observar el textarea
+          resizeObserver.observe(editorTextarea);
+    
+          // Limpia el observer al desmontar el componente
+          return () => {
+            resizeObserver.disconnect();
+          };
+        }
+      }, []);
+
+      useEffect(() => {
+        function handleScroll() {
+          // Ajusta la altura del textarea a su contenido
+            const textarea = editorTextareaRef.current;
+            textarea.style.height = 'auto'; // Temporalmente setea la altura a auto para obtener el scrollHeight correcto
+            const linesCount = textarea.value.split('\n').length;
+            const lineHeight = 19.15;
+            textarea.style.height = `${Math.max(linesCount * lineHeight, 300)}px`; // Asegura que la altura sea al menos 300px
+        }
+    
+        // Agrega el event listener al textarea
+        const textarea = editorTextareaRef.current;
+        textarea.addEventListener('input', handleScroll);
+    
+        // Limpia el event listener cuando el componente se desmonta
+        return () => {
+          textarea.removeEventListener('input', handleScroll);
+        };
+      }, []);
+
     const clear = () => {
         setEditorContent(''); // Limpia el contenido del editor
         setInputValue(''); // Limpia el input del ID
@@ -170,11 +216,12 @@ const EditorArea: React.FC<{ setTranspiledCode: (code: string) => void }> = ({ s
             
             </div>
             <div className="editor-content">
-                <div className="line-numbers">
+                <div className="line-numbers" ref={lineNumbersRef}>
                     <pre>{lineNumbers}</pre>
                 </div>
                 <textarea
                     className="editor-textarea"
+                    ref={editorTextareaRef}
                     value={editorContent}
                     onChange={handleEditorChange}
                     onClick={handleCursorChange}

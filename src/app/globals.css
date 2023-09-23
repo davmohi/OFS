@@ -68,7 +68,7 @@
 /* estilo para EA */
 
 pre {
-  line-height: 18.5px;
+  line-height: 18.43px;
 }
 
 
@@ -99,7 +99,7 @@ pre {
 
 
 .line-numbers {
-  margin-top: 10px;
+  margin-top: 10.4px;
   background-color: unset;
   color: #999;
   text-align: right;
@@ -122,6 +122,9 @@ pre {
   border-radius: 5px;
   resize: vertical;
   flex-grow: 1; /* Permite que el textarea crezca para ocupar el espacio restante */
+  overflow-x: auto; /* Habilita el desplazamiento horizontal */
+  overflow-y: hidden; /* Deshabilita el desplazamiento vertical */
+  white-space: nowrap; /* Evita que el texto se ajuste al siguiente renglón */
 }
 
 .editor-textarea::placeholder{
