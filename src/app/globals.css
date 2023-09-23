@@ -150,6 +150,19 @@ pre {
 
 
 /* Estilos para el header */
+
+.btn-otros {
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  position: absolute;
+  top: 20px;
+  left: 21px;
+}
+
 .header-container {
   background-color: #2b2b2b; /* Color de fondo gris claro */
   padding: 20px;
