@@ -74,6 +74,7 @@ pre {
 
 .editor-content { /* Estilos para el nuevo contenedor */
   display: flex;
+  overflow: hidden;
 }
 
 .editor-header {
@@ -104,10 +105,11 @@ pre {
   text-align: right;
   padding-right: 5px;
   user-select: none;
-  border-right: 1px solid #ccc;
   width: 30px;
   overflow: hidden;
   flex-shrink: 0; /* Evita que el contenedor de números de línea se reduzca */
+  max-height: 100%; 
+  overflow-y: hidden;
 }
 
 .editor-textarea {

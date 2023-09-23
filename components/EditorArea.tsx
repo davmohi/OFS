@@ -1,5 +1,5 @@
 // components/EditorArea.tsx
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { EditorInfo, EditorInfoContext } from './EditorInfo';
 import Compiler from './CompilerButton';
 import SaveButton from './SaveButton';    
@@ -11,6 +11,8 @@ const EditorArea: React.FC<{ setTranspiledCode: (code: string) => void }> = ({ s
     const [isSaved, setIsSaved] = useState(false);
     const [compileRequested, setCompileRequested] = useState(false); //Estado del component CompilerButton 
     const [saveOnClick, setSaveOnClick] = useState(false);//Estado del component SaveButton
+    const lineNumbersRef = useRef(null);
+    const editorTextareaRef = useRef(null);
 
 
     const handleCompileClick = () => {
@@ -105,6 +107,16 @@ const EditorArea: React.FC<{ setTranspiledCode: (code: string) => void }> = ({ s
         setCursorLine(prevText.split('\n').length);
     };
 
+    const handleKeyUp = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+        // Verificar si la tecla presionada es una flecha hacia arriba o hacia abajo
+        if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+            // Calcular la nueva posición del cursor y actualizar cursorLine
+            const cursorPos = (e.target as HTMLTextAreaElement).selectionStart;
+            const prevText = editorContent.substring(0, cursorPos);
+            setCursorLine(prevText.split('\n').length);
+        }
+    };
+
     const clear = () => {
         setEditorContent(''); // Limpia el contenido del editor
         setInputValue(''); // Limpia el input del ID
@@ -167,6 +179,7 @@ const EditorArea: React.FC<{ setTranspiledCode: (code: string) => void }> = ({ s
                     value={editorContent}
                     onChange={handleEditorChange}
                     onClick={handleCursorChange}
+                    onKeyUp={handleKeyUp}
                     placeholder="Escribe tu código aquí..."
                 />
             </div>
