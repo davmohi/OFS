@@ -11,7 +11,7 @@ const StopButton: React.FC<{
     }
     return(
         <button onClick={handleClick} title="Stop">
-      <img src="/stop.svg" alt="Stop" />
+      <img src="/stop.svg" alt="Stop" style={{height: '16px'}}/>
     </button>
     );
 }

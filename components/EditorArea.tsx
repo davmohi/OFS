@@ -16,8 +16,8 @@ const EditorArea: React.FC<{ setTranspiledCode: (code: string) => void; setRespo
     const [compileRequested, setCompileRequested] = useState(false); //Estado del component CompilerButton 
     const [saveOnClick, setSaveOnClick] = useState(false);//Estado del component SaveButton
     
-    const lineNumbersRef = useRef(null);
-    const editorTextareaRef = useRef(null);
+    const lineNumbersRef = useRef<HTMLDivElement>(null);
+    const editorTextareaRef = useRef<HTMLTextAreaElement>(null);
 
 
     const handleCompileClick = () => {
@@ -94,20 +94,24 @@ const EditorArea: React.FC<{ setTranspiledCode: (code: string) => void; setRespo
         function handleScroll() {
           // Ajusta la altura del textarea a su contenido
             const textarea = editorTextareaRef.current;
-            textarea.style.height = 'auto'; // Temporalmente setea la altura a auto para obtener el scrollHeight correcto
-            const linesCount = textarea.value.split('\n').length;
-            const lineHeight = 19.15;
-            textarea.style.height = `${Math.max(linesCount * lineHeight, 300)}px`; // Asegura que la altura sea al menos 300px
+            if (textarea) {
+                textarea.style.height = 'auto'; // Temporalmente setea la altura a auto para obtener el scrollHeight correcto
+                const linesCount = textarea.value.split('\n').length;
+                const lineHeight = 19.15;
+                textarea.style.height = `${Math.max(linesCount * lineHeight, 300)}px`; // Asegura que la altura sea al menos 300px
+            }
         }
     
         // Agrega el event listener al textarea
         const textarea = editorTextareaRef.current;
-        textarea.addEventListener('input', handleScroll);
-    
-        // Limpia el event listener cuando el componente se desmonta
-        return () => {
-          textarea.removeEventListener('input', handleScroll);
-        };
+        if (textarea){
+            textarea.addEventListener('input', handleScroll);
+        
+            // Limpia el event listener cuando el componente se desmonta
+            return () => {
+            textarea.removeEventListener('input', handleScroll);
+            };
+        }
       }, []);
 
     const clear = () => {
