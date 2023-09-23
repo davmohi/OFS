@@ -1,7 +1,7 @@
 // components/EditorArea.tsx
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { EditorInfo, EditorInfoContext } from './EditorInfo';
-import Compiler from './CompilerButton';
+import CompileButton from './CompilerButton';
 import SaveButton from './SaveButton';    
 import ChangeButton from './ChangeButton';
 import ClearButton from './ClearButton';
@@ -13,19 +13,11 @@ const EditorArea: React.FC<{ setTranspiledCode: (code: string) => void; setRespo
     const [inputValue, setInputValue] = useState('');
     const [cursorLine, setCursorLine] = useState(1);
     const [isSaved, setIsSaved] = useState(false);
-    const [compileRequested, setCompileRequested] = useState(false); //Estado del component CompilerButton 
+    
     const [saveOnClick, setSaveOnClick] = useState(false);//Estado del component SaveButton
     
     const lineNumbersRef = useRef<HTMLDivElement>(null);
     const editorTextareaRef = useRef<HTMLTextAreaElement>(null);
-
-
-    const handleCompileClick = () => {
-        setCompileRequested(true);
-    };
-    const handleCompilationComplete = () => {
-        setCompileRequested(false);
-    };
 
     const updateLineNumbers = () => {
         const lines = editorContent.split('\n').length;
@@ -149,18 +141,7 @@ const EditorArea: React.FC<{ setTranspiledCode: (code: string) => void; setRespo
                 <SaveButton inputValue={inputValue} editorContent={editorContent} setSaveOnClick={setIsSaved} />
                 <ChargeButton inputValue={inputValue} setEditorContent={setEditorContent} />
                 <StopButton setTranspiledCode={setTranspiledCode} setResponse={setResponse}/>
-                <button onClick={handleCompileClick} title="Transpilar">
-                    <img src="/compile-icon.png" alt="Compile" />
-                </button>
-                {compileRequested && (
-                <Compiler
-                    content={editorContent}
-                    setTranspiledCode={(code) => {
-                        setTranspiledCode(code);
-                        handleCompilationComplete();
-                    }}
-                />
-            )}
+                <CompileButton setTranspiledCode={setTranspiledCode} editorContent={editorContent} />
             
             </div>
             <div className="editor-content">

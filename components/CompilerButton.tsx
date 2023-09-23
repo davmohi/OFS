@@ -1,36 +1,42 @@
-// Compiler.tsx
-import React, { useEffect } from 'react';
+// CompileButton.tsx
+import React, { useState } from 'react';
 
-const Compiler: React.FC<{ content: string, setTranspiledCode: (code: string) => void }> = ({ content, setTranspiledCode }) => {
-    useEffect(() => {
-        const compileCode = async () => {
-            try {
-                const response = await fetch('/api/compile', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ content })
-                });
+const CompileButton: React.FC<{ setTranspiledCode: (code: string) => void, editorContent: string }> = ({ setTranspiledCode, editorContent }) => {
+    const [isCompiling, setIsCompiling] = useState(false);
 
-                const data = response.ok ? await response.json() : null;
-                // Convierte el JSON a una cadena
-                const stringifiedData = data;
-                setTranspiledCode(stringifiedData);
+    const compileCode = async () => {
+        setIsCompiling(true);
+        try {
+            const response = await fetch('/api/compile', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ content: editorContent })
+            });
 
-                if (!response.ok) {
-                    console.error("Error al compilar");
-                }
-            } catch (error) {
-                console.error("Error al compilar", error);
+            const data = response.ok ? await response.json() : null;
+            // JSON to string
+            const stringifiedData = data;
+            setTranspiledCode(stringifiedData);
+
+            if (!response.ok) {
+                console.error("Error al compilar");
             }
-        };
+        } catch (error) {
+            console.error("Error al compilar", error);
+        } finally {
+            setIsCompiling(false);
+        }
+    };
 
-        compileCode(); // Llama a la función de compilación cuando el componente se monta
-
-    }, [content, setTranspiledCode]);
-
-    return null; // Este componente no renderiza nada, solo realiza la compilación
+    return (
+        <div>
+            <button onClick={compileCode} title="Transpilar">
+            <img src="/compile-icon.png" alt="Compile" />
+            </button>
+        </div>
+    );
 };
 
-export default Compiler;
+export default CompileButton;
