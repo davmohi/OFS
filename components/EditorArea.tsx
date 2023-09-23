@@ -3,6 +3,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { EditorInfo, EditorInfoContext } from './EditorInfo';
 import Compiler from './CompilerButton';
 import SaveButton from './SaveButton';    
+import ChangeButton from './ChangeButton';
 
 const EditorArea: React.FC<{ setTranspiledCode: (code: string) => void }> = ({ setTranspiledCode }) => {
     const [editorContent, setEditorContent] = useState('');
@@ -137,9 +138,7 @@ const EditorArea: React.FC<{ setTranspiledCode: (code: string) => void }> = ({ s
                 <button onClick={clear} title="Limpiar">
                     <img src="/limpiar.svg" alt="Limpiar" />
                 </button>
-                <button onClick={change } title="Editar">
-                    <img src="/rename.png" alt="Editar" />
-                </button>
+                <ChangeButton inputValue={inputValue} setInputValue={setInputValue} editorContent={editorContent}/>
                 <SaveButton inputValue={inputValue} editorContent={editorContent} setSaveOnClick={setIsSaved} />
                 <button onClick={charge} title="Cargar">
                     <img src="/cargar.svg" alt="Cargar" />
