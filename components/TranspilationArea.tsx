@@ -10,7 +10,7 @@ const TranspilationArea: React.FC<Props> = ({ transpiledCode, setResponse }) => 
     
     const handleEvalClick = async () => {
         try {
-          const response = await fetch('/eval', {
+          const response = await fetch('/api/eval', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -19,7 +19,8 @@ const TranspilationArea: React.FC<Props> = ({ transpiledCode, setResponse }) => 
           });
     
           const data = await response.json();
-          setResponse(data.result);
+          console.log(data);
+          setResponse(data.eval);
         } catch (error) {
         const dummyResponse = `Probando eval`;
         setResponse(dummyResponse);
