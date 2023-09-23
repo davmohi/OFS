@@ -5,8 +5,9 @@ import Compiler from './CompilerButton';
 import SaveButton from './SaveButton';    
 import ChangeButton from './ChangeButton';
 import ClearButton from './ClearButton';
+import StopButton from './StopButton';
 
-const EditorArea: React.FC<{ setTranspiledCode: (code: string) => void }> = ({ setTranspiledCode }) => {
+const EditorArea: React.FC<{ setTranspiledCode: (code: string) => void; setResponse: (code: string) => void }> = ({ setTranspiledCode,setResponse }) => {
     const [editorContent, setEditorContent] = useState('');
     const [inputValue, setInputValue] = useState('');
     const [cursorLine, setCursorLine] = useState(1);
@@ -155,6 +156,7 @@ const EditorArea: React.FC<{ setTranspiledCode: (code: string) => void }> = ({ s
                 <button onClick={charge} title="Cargar">
                     <img src="/cargar.svg" alt="Cargar" />
                 </button>
+                <StopButton setTranspiledCode={setTranspiledCode} setResponse={setResponse}/>
                 <button onClick={handleCompileClick} title="Transpilar">
                     <img src="/compile-icon.png" alt="Compile" />
                 </button>

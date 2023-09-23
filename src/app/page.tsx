@@ -21,7 +21,7 @@ export default function Home() {
                 <tbody>
                     <tr>
                         <td className="half-width">
-                          <EditorArea setTranspiledCode={setTranspiledCode} />
+                          <EditorArea setTranspiledCode={setTranspiledCode} setResponse={setResponse}/>
                         </td>
                         <td className="half-width">
                           <TranspilationArea transpiledCode={transpiledCode} setResponse={setResponse} />
