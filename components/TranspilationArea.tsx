@@ -31,7 +31,9 @@ const TranspilationArea: React.FC<Props> = ({ transpiledCode, setResponse }) => 
         <div className="transpilation-container">
             <div className="transpilation-header">
                 <h3>Área de Transpilación</h3>
-                <button onClick={handleEvalClick}>Evaluar</button>
+                <button onClick={handleEvalClick}>
+                <img src="/compile-icon.png" alt="Compile"></img>
+                </button>
             </div>
             <textarea
                 className="transpilation-textarea"

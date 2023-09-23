@@ -1,5 +1,5 @@
 // components/EditorArea.tsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const EditorArea: React.FC<{ setTranspiledCode: (code: string) => void }> = ({ setTranspiledCode }) => {
     const [editorContent, setEditorContent] = useState('');
@@ -31,7 +31,7 @@ const EditorArea: React.FC<{ setTranspiledCode: (code: string) => void }> = ({ s
     const guardar = async () => {
         try {
             // Primero, verifica si el archivo ya existe
-            const checkResponse = await fetch(`/api/script?id=${inputValue}`, {
+            const checkResponse = await fetch(`/api/script/${inputValue}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
@@ -47,12 +47,12 @@ const EditorArea: React.FC<{ setTranspiledCode: (code: string) => void }> = ({ s
             }
     
             // Realiza la solicitud POST para guardar o sobrescribir el archivo
-            const response = await fetch('/api/script', {
+            const response = await fetch(`/api/script/${inputValue}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ content: editorContent, id: inputValue })
+                body: JSON.stringify({ content: editorContent })
             });
     
             if (response.ok) {
@@ -69,7 +69,7 @@ const EditorArea: React.FC<{ setTranspiledCode: (code: string) => void }> = ({ s
 
     const cargar = async () => {
         try {
-            const response = await fetch(`/api/script?id=${inputValue}`, {
+            const response = await fetch(`/api/script/${inputValue}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
@@ -97,10 +97,17 @@ const EditorArea: React.FC<{ setTranspiledCode: (code: string) => void }> = ({ s
     };
     
     const [lineNumbers, setLineNumbers] = useState(updateLineNumbers());
+
+    useEffect(() => {
+        setLineNumbers(updateLineNumbers());
+    }, [editorContent]);
     
     const handleEditorChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         setEditorContent(e.target.value);
-        setLineNumbers(updateLineNumbers());
+    };
+
+    const limpiar = () => {
+        setEditorContent(''); // Limpia el contenido del editor
     };
 
     return (
@@ -113,13 +120,16 @@ const EditorArea: React.FC<{ setTranspiledCode: (code: string) => void }> = ({ s
                     value={inputValue}
                     onChange={(e) => setInputValue(e.target.value)}
                 />
-                <button onClick={guardar} className="save-button">
+                <button onClick={limpiar} title="Limpiar">
+                    <img src="/limpiar.svg" alt="Limpiar" />
+                </button>
+                <button onClick={guardar} title="Guardar">
                     <img src="/guardar.svg" alt="Guardar" />
                 </button>
-                <button onClick={cargar} className="load-button">
+                <button onClick={cargar} title="Cargar">
                     <img src="/cargar.svg" alt="Cargar" />
                 </button>
-                <button onClick={compileCode} className="compile-button">
+                <button onClick={compileCode} title="Transpilar">
                     <img src="/compile-icon.png" alt="Compile" />
                 </button>
             </div>

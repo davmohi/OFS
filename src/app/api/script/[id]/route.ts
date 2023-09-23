@@ -1,19 +1,18 @@
+// script/[id]/route.ts
 import { NextResponse } from 'next/server';
-import { promises as fs } from 'fs';
-import { join } from 'path';
-import { parse as parseUrl } from 'url';
+import { write, read,rename } from '../../../dataServices/script'; // Asegúrate de ajustar la ruta de importación correctamente
 
-const filesDirectory = join(process.cwd(), 'codigos');
-
-export const POST = async (req: Request) => {
+export const POST = async (req: Request, { params }: { params: { id: string } }) => {
   try {
+    const id = params.id;
     const requestData = await req.json();
-    const { id, content } = requestData;
+    const { content } = requestData;
+    
     if (!id || !content) {
       return NextResponse.json({ message: "ID y contenido son requeridos" }, { status: 400 });
     }
-    const filePath = join(filesDirectory, id);
-    await fs.writeFile(filePath, content, 'utf8');
+
+    await write(id, content);
 
     return NextResponse.json({ message: "Archivo creado/actualizado con éxito" }, { status: 200 });
   } catch (error) {
@@ -21,23 +20,16 @@ export const POST = async (req: Request) => {
   }
 }
 
-export const GET = async (req: Request) => {
+export const GET = async (req: Request, { params }: { params: { id: string } }) => {
   try {
-    const parsedUrl = parseUrl(req.url || '', true);
-    const { id } = parsedUrl.query;
-
+    const id = params.id;
+    
     if (!id) {
       return NextResponse.json({ message: "ID es requerido" }, { status: 400 });
     }
 
-    const filePath = join(filesDirectory, id as string);
-    const fileExists = await fs.access(filePath).then(() => true).catch(() => false);
-
-    if (!fileExists) {
-      return NextResponse.json({ message: "Archivo no encontrado" }, { status: 404 });
-    }
-
-    const content = await fs.readFile(filePath, 'utf8');
+    const content = await read(id);
+    
     return NextResponse.json({ content }, { status: 200 });
   } catch (error) {
     return NextResponse.json({ message: "Error", error }, { status: 500 });

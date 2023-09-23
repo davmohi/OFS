@@ -2,7 +2,6 @@
 
 /* Estilo para el RA */
 .response-container {
-  margin: 20px 0;
   padding: 20px;
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -32,6 +31,7 @@
 }
 
 .transpilation-header {
+  margin-bottom: 12px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -52,7 +52,7 @@
 /* estilo para EA */
 
 pre {
-  line-height: 18.2px;
+  line-height: 18.5px;
 }
 
 
@@ -61,6 +61,7 @@ pre {
 }
 
 .editor-header {
+  margin-bottom: 12px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -70,18 +71,9 @@ pre {
   margin-left: 30px;
 }
 
-.compile-button {
-  color: white;
-  border: none;
-  padding: 5px 10px;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
 .editor-container {
   margin: 20px 0;
-  padding: 20px 0;
+  padding: 20px 20px 20px 0px;
   border: 1px solid #ccc;
   border-radius: 5px;
   position: relative;
@@ -89,7 +81,7 @@ pre {
 
 .line-numbers {
   margin-top: 10px;
-  background-color: #000000;
+  background-color: unset;
   color: #999;
   text-align: right;
   padding-right: 5px;
@@ -127,14 +119,14 @@ pre {
 
 /* Estilos para el header */
 .header-container {
-  background-color: #f5f5f5; /* Color de fondo gris claro */
+  background-color: #2b2b2b; /* Color de fondo gris claro */
   padding: 20px;
   position: relative; /* Establece un contexto de posicionamiento para el botón */
   text-align: center; /* Centra el título */
 }
 
 .header-title {
-  color: black;
+  color: white;
   font-size: 24px;
   margin: 0; /* Elimina el margen para que el título esté centrado */
 }
@@ -271,7 +263,6 @@ pre {
 
 * {
   box-sizing: border-box;
-  padding: 0;
   margin: 0;
 }
 
