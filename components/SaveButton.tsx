@@ -55,6 +55,6 @@ const SaveButton: React.FC<{
       <img src="/guardar.svg" alt="Guardar" />
     </button>
   );
-};
+};  
 
 export default SaveButton;

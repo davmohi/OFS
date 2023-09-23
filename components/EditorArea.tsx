@@ -140,7 +140,7 @@ const EditorArea: React.FC<{ setTranspiledCode: (code: string) => void }> = ({ s
                 <button onClick={change } title="Editar">
                     <img src="/rename.png" alt="Editar" />
                 </button>
-                <SaveButton inputValue={inputValue} editorContent={editorContent} setSaveOnClick={setSaveOnClick} />
+                <SaveButton inputValue={inputValue} editorContent={editorContent} setSaveOnClick={setIsSaved} />
                 <button onClick={charge} title="Cargar">
                     <img src="/cargar.svg" alt="Cargar" />
                 </button>
