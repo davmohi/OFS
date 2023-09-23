@@ -4,6 +4,7 @@ import { EditorInfo, EditorInfoContext } from './EditorInfo';
 import Compiler from './CompilerButton';
 import SaveButton from './SaveButton';    
 import ChangeButton from './ChangeButton';
+import ClearButton from './ClearButton';
 
 const EditorArea: React.FC<{ setTranspiledCode: (code: string) => void }> = ({ setTranspiledCode }) => {
     const [editorContent, setEditorContent] = useState('');
@@ -11,7 +12,7 @@ const EditorArea: React.FC<{ setTranspiledCode: (code: string) => void }> = ({ s
     const [cursorLine, setCursorLine] = useState(1);
     const [isSaved, setIsSaved] = useState(false);
     const [compileRequested, setCompileRequested] = useState(false); //Estado del component CompilerButton 
-    const [saveOnClick, setSaveOnClick] = useState(false);//Estado del component SaveButton
+
 
 
     const handleCompileClick = () => {
@@ -109,7 +110,8 @@ const EditorArea: React.FC<{ setTranspiledCode: (code: string) => void }> = ({ s
     const clear = () => {
         setEditorContent(''); // Limpia el contenido del editor
         setInputValue(''); // Limpia el input del ID
-    };
+        setIsSaved(false);
+      };
     // Calcula el número total de líneas y palabras en EA
     const totalLines = editorContent.split('\n').length;
     const totalWords = editorContent.split(/\s+/).filter((word) => word !== '').length;
@@ -135,9 +137,7 @@ const EditorArea: React.FC<{ setTranspiledCode: (code: string) => void }> = ({ s
                     onChange={(e) => setInputValue(e.target.value)}
                     className="custom-input-placeholder"
                 />
-                <button onClick={clear} title="Limpiar">
-                    <img src="/limpiar.svg" alt="Limpiar" />
-                </button>
+                <ClearButton onClear={clear} />
                 <ChangeButton inputValue={inputValue} setInputValue={setInputValue} editorContent={editorContent}/>
                 <SaveButton inputValue={inputValue} editorContent={editorContent} setSaveOnClick={setIsSaved} />
                 <button onClick={charge} title="Cargar">
@@ -167,7 +167,7 @@ const EditorArea: React.FC<{ setTranspiledCode: (code: string) => void }> = ({ s
                     onChange={handleEditorChange}
                     onClick={handleCursorChange}
                     placeholder="Escribe tu código aquí..."
-                />
+                />  
             </div>
             <EditorInfoContext.Provider value={editorInfo}>
                 <EditorInfo/>
