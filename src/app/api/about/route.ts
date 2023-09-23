@@ -2,7 +2,7 @@
 import { NextResponse } from 'next/server';
 import { readData } from '../../dataServices/about'; // Asegúrate de ajustar la ruta de importación correctamente
 
-export async function GET(req: Request) {
+export const GET = async (req: Request) => {
   try {
     const data = await readData();
     return NextResponse.json(data, { status: 200 });

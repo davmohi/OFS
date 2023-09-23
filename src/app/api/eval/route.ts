@@ -2,7 +2,7 @@
 import { NextResponse } from 'next/server';
 import { evalData } from '../../dataServices/eval'; 
 
-export async function POST(req: Request) {
+export const POST = async(req: Request)=> {
     try{
         const data = await evalData();
         return NextResponse.json(data, {status: 200})
