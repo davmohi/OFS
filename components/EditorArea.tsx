@@ -187,6 +187,7 @@ const EditorArea: React.FC<{ setTranspiledCode: (code: string) => void }> = ({ s
                     placeholder="Id del codigo"
                     value={inputValue}
                     onChange={(e) => setInputValue(e.target.value)}
+                    className="custom-input-placeholder"
                 />
                 <button onClick={clear} title="Limpiar">
                     <img src="/limpiar.svg" alt="Limpiar" />

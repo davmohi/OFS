@@ -21,11 +21,11 @@ const EditorInfo: React.FC = () => {
 
   return (
     <div className="editor-info" style={{ display: 'flex' }}>
-        <p style={{ marginRight: '40px',marginTop: '10px',marginLeft:'10px' }}>ID: {editorInfo.id}</p>
-        <p style={{ marginRight: '40px', marginTop: '10px'}}>LíneaCursor: {editorInfo.cursorLine}</p>
-        <p style={{ marginRight: '40px', marginTop: '10px'}}>TotalLíneas: {editorInfo.totalLines}</p>
-        <p style={{ marginRight: '40px',marginTop: '10px' }}>TotalPalabras: {editorInfo.totalWords}</p>
-        <p style={{ marginTop: '10px' }}>Guardado: {editorInfo.isSaved ? 'Sí' : 'No'}</p>
+        <p className='editor-info-p'>ID: {editorInfo.id}</p>
+        <p className='editor-info-p'>LíneaCursor: {editorInfo.cursorLine}</p>
+        <p className='editor-info-p'>TotalLíneas: {editorInfo.totalLines}</p>
+        <p className='editor-info-p'>TotalPalabras: {editorInfo.totalWords}</p>
+        <p className='editor-info-p'>Guardado: {editorInfo.isSaved ? 'Sí' : 'No'}</p>
     </div>
 );
 
