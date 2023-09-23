@@ -1,11 +1,12 @@
 // components/EditorArea.tsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
+import { EditorInfo, EditorInfoContext } from './EditorInfo';
 
 const EditorArea: React.FC<{ setTranspiledCode: (code: string) => void }> = ({ setTranspiledCode }) => {
     const [editorContent, setEditorContent] = useState('');
     const [inputValue, setInputValue] = useState('');
     const [cursorLine, setCursorLine] = useState(1);
-    const [isSaved, setIsSaved] = useState(true);
+    const [isSaved, setIsSaved] = useState(false);
 
     const compileCode = async () => {
         try {
@@ -61,6 +62,7 @@ const EditorArea: React.FC<{ setTranspiledCode: (code: string) => void }> = ({ s
                 body: JSON.stringify({ content: editorContent })
             });
             if (response.ok) {
+                setIsSaved(true);   
                 alert('Script guardado exitosamente');
             } 
             else if (response.status == 400) {
@@ -136,6 +138,7 @@ const EditorArea: React.FC<{ setTranspiledCode: (code: string) => void }> = ({ s
         for (let i = 1; i <= lines; i++) {
             lineNumbers += i + '\n';
         }
+        
         return lineNumbers;
     };
     
@@ -143,6 +146,7 @@ const EditorArea: React.FC<{ setTranspiledCode: (code: string) => void }> = ({ s
 
     useEffect(() => {
         setLineNumbers(updateLineNumbers());
+        setCursorLine(editorContent.split('\n').length);
     }, [editorContent]);
     
     const handleEditorChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -160,7 +164,20 @@ const EditorArea: React.FC<{ setTranspiledCode: (code: string) => void }> = ({ s
         setEditorContent(''); // Limpia el contenido del editor
         setInputValue(''); // Limpia el input del ID
     };
+    // Calcula el número total de líneas y palabras en EA
+    const totalLines = editorContent.split('\n').length;
+    const totalWords = editorContent.split(/\s+/).filter((word) => word !== '').length;
 
+  // Proporciona los datos al contexto
+    const editorInfo = useMemo(() => {
+    return {
+      id: inputValue,
+      cursorLine: cursorLine,
+      totalLines: totalLines,
+      totalWords: totalWords,
+      isSaved: isSaved,
+    };
+  }, [inputValue, cursorLine, totalLines, totalWords, isSaved]);
     return (
         <div className="editor-container">
             <div className="editor-header">
@@ -199,6 +216,9 @@ const EditorArea: React.FC<{ setTranspiledCode: (code: string) => void }> = ({ s
                     placeholder="Escribe tu código aquí..."
                 />
             </div>
+            <EditorInfoContext.Provider value={editorInfo}>
+                <EditorInfo/>
+            </EditorInfoContext.Provider>
         </div>
     );
 };
