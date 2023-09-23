@@ -1,34 +1,20 @@
 // components/EditorArea.tsx
 import React, { useState, useEffect, useMemo } from 'react';
 import { EditorInfo, EditorInfoContext } from './EditorInfo';
+import Compiler from './Compiler';
 
 const EditorArea: React.FC<{ setTranspiledCode: (code: string) => void }> = ({ setTranspiledCode }) => {
     const [editorContent, setEditorContent] = useState('');
     const [inputValue, setInputValue] = useState('');
     const [cursorLine, setCursorLine] = useState(1);
     const [isSaved, setIsSaved] = useState(false);
+    const [compileRequested, setCompileRequested] = useState(false); 
 
-    const compileCode = async () => {
-        try {
-            const response = await fetch('/api/compile', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ content: editorContent })
-            });
-
-            const data = response.ok ? await response.json() : null;
-            //json to string
-            const stringifiedData = data
-            setTranspiledCode(stringifiedData)
-
-            if (!response.ok) {
-                console.error("Error al compilar");
-            }
-        } catch (error) {
-            console.error("Error al compilar", error);
-        }
+    const handleCompileClick = () => {
+        setCompileRequested(true);
+    };
+    const handleCompilationComplete = () => {
+        setCompileRequested(false);
     };
 
     const save = async () => {
@@ -201,9 +187,18 @@ const EditorArea: React.FC<{ setTranspiledCode: (code: string) => void }> = ({ s
                 <button onClick={charge} title="Cargar">
                     <img src="/cargar.svg" alt="Cargar" />
                 </button>
-                <button onClick={compileCode} title="Transpilar">
+                <button onClick={handleCompileClick} title="Transpilar">
                     <img src="/compile-icon.png" alt="Compile" />
                 </button>
+                {compileRequested && (
+                <Compiler
+                    content={editorContent}
+                    setTranspiledCode={(code) => {
+                        setTranspiledCode(code);
+                        handleCompilationComplete();
+                    }}
+                />
+            )}
             </div>
             <div className="editor-content">
                 <div className="line-numbers">
