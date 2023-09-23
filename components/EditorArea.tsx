@@ -4,6 +4,8 @@ import React, { useState, useEffect } from 'react';
 const EditorArea: React.FC<{ setTranspiledCode: (code: string) => void }> = ({ setTranspiledCode }) => {
     const [editorContent, setEditorContent] = useState('');
     const [inputValue, setInputValue] = useState('');
+    const [cursorLine, setCursorLine] = useState(1);
+    const [isSaved, setIsSaved] = useState(true);
 
     const compileCode = async () => {
         try {
@@ -29,6 +31,10 @@ const EditorArea: React.FC<{ setTranspiledCode: (code: string) => void }> = ({ s
     };
 
     const guardar = async () => {
+        if (!inputValue) {
+            alert('El ID es requerido');
+            return;
+        }
         try {
             // Primero, verifica si el archivo ya existe
             const checkResponse = await fetch(`/api/script/${inputValue}`, {
@@ -54,11 +60,14 @@ const EditorArea: React.FC<{ setTranspiledCode: (code: string) => void }> = ({ s
                 },
                 body: JSON.stringify({ content: editorContent })
             });
-    
             if (response.ok) {
                 alert('Script guardado exitosamente');
-            } else {
-                alert('No se pudo guardar el script');
+            } 
+            else if (response.status == 400) {
+                alert('ID y contenido son requeridos')
+            }
+            else {
+                alert('Hubo un error inesperado al guardar el script');
             }
         } catch (error) {
             console.error("Error al guardar", error);
@@ -68,6 +77,10 @@ const EditorArea: React.FC<{ setTranspiledCode: (code: string) => void }> = ({ s
     
 
     const cargar = async () => {
+        if (!inputValue) {
+            alert('El ID es requerido');
+            return;
+        }
         try {
             const response = await fetch(`/api/script/${inputValue}`, {
                 method: 'GET',
@@ -84,6 +97,36 @@ const EditorArea: React.FC<{ setTranspiledCode: (code: string) => void }> = ({ s
             }
         } catch (error) {
             console.error("Error al cargar", error);
+        }
+    };
+
+    const editar = async () => {
+        if (!inputValue) {
+            alert('El ID es requerido');
+            return;
+        }
+        const nuevoId = window.prompt('Ingresa el nuevo ID:');
+        if (nuevoId && nuevoId !== inputValue) {
+            try {
+                const response = await fetch('/api/change', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ id: inputValue, newId: nuevoId })
+                });
+
+                if (response.ok) {
+                    setInputValue(nuevoId);
+                    alert('ID cambiado exitosamente');
+                } else {
+                    alert('Error al cambiar el ID');
+                }
+            } catch (error) {
+                alert('Error inesperado al cambiar el ID');
+            }
+        } else if (nuevoId === inputValue) {
+            alert('El nuevo ID es el mismo que el actual. No se hizo ningún cambio.');
         }
     };
     
@@ -104,10 +147,18 @@ const EditorArea: React.FC<{ setTranspiledCode: (code: string) => void }> = ({ s
     
     const handleEditorChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         setEditorContent(e.target.value);
+        setIsSaved(false)
+    };
+
+    const handleCursorChange = (e: React.MouseEvent<HTMLTextAreaElement>) => {
+        const cursorPos = (e.target as HTMLTextAreaElement).selectionStart;
+        const prevText = editorContent.substring(0, cursorPos);
+        setCursorLine(prevText.split('\n').length);
     };
 
     const limpiar = () => {
         setEditorContent(''); // Limpia el contenido del editor
+        setInputValue(''); // Limpia el input del ID
     };
 
     return (
@@ -122,6 +173,9 @@ const EditorArea: React.FC<{ setTranspiledCode: (code: string) => void }> = ({ s
                 />
                 <button onClick={limpiar} title="Limpiar">
                     <img src="/limpiar.svg" alt="Limpiar" />
+                </button>
+                <button onClick={editar} title="Editar">
+                    <img src="/rename.png" alt="Editar" />
                 </button>
                 <button onClick={guardar} title="Guardar">
                     <img src="/guardar.svg" alt="Guardar" />
@@ -141,6 +195,7 @@ const EditorArea: React.FC<{ setTranspiledCode: (code: string) => void }> = ({ s
                     className="editor-textarea"
                     value={editorContent}
                     onChange={handleEditorChange}
+                    onClick={handleCursorChange}
                     placeholder="Escribe tu código aquí..."
                 />
             </div>

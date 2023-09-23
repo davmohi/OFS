@@ -1,17 +1,13 @@
+import { promises as fs } from 'fs';
+import { join } from 'path';
+
+const filesDirectory = join(process.cwd(), 'public');
+
 export async function evalData() {
-    return {
-        members: [
-            { id: 1, name: "Alberto Aguero Herdocia", cedula: "118450651" },
-            { id: 2, name: "Anderson Mora Aguero", cedula: "115600170" },
-            { id: 3, name: "David Morales Hidalgo", cedula: "116300616" },
-            { id: 4, name: "Luis Lopez Castro", cedula: "402420889" }
-        ],
-        course: "Paradigmas de Programación",
-        project: "OneFlowStream (OFS)",
-        semester: "2",
-        year: "2023",
-        school: "Escuela de Ingeniería",
-        university: "Universidad Nacional",
-        eval:"Evaluando"
+    const filePath = join(filesDirectory, 'dummy_eval')
+    const fileExists = await fs.access(filePath).then(() => true).catch(() => false);
+    if (!fileExists) {
+        throw new Error('Archivo no encontrado');
     }
+    return await fs.readFile(filePath, 'utf8');
 }

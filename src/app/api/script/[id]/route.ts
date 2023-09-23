@@ -14,11 +14,29 @@ export const POST = async (req: Request, { params }: { params: { id: string } })
 
     await write(id, content);
 
-    return NextResponse.json({ message: "Archivo creado/actualizado con éxito" }, { status: 200 });
+    return NextResponse.json({ message: "Script creado/actualizado con éxito" }, { status: 200 });
   } catch (error) {
     return NextResponse.json({ message: "Error", error }, { status: 500 });
   }
 }
+
+// export const PUT = async (req: Request, { params }: { params: { id: string } }) => {
+//   try {
+//     const id = params.id;
+//     const requestData = await req.json();
+//     const newID  = requestData.newId;
+    
+//     if (!id || !newID) {
+//       return NextResponse.json({ message: "ID y nuevo ID son requeridos" }, { status: 400 });
+//     }
+
+//     await rename(id, newID);
+
+//     return NextResponse.json({ message: "Script ID cambiado con éxito" }, { status: 200 });
+//   } catch (error) {
+//     return NextResponse.json({ message: "Error", error }, { status: 500 });
+//   }
+// }
 
 export const GET = async (req: Request, { params }: { params: { id: string } }) => {
   try {

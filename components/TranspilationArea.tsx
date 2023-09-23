@@ -20,11 +20,9 @@ const TranspilationArea: React.FC<Props> = ({ transpiledCode, setResponse }) => 
     
           const data = await response.json();
           console.log(data);
-          setResponse(data.eval);
+          setResponse(data);
         } catch (error) {
-        const dummyResponse = `Probando eval`;
-        setResponse(dummyResponse);
-          console.error('Error al evaluar el código:', error);
+          console.error('Error al evaluar el código:', error)
         }
     };
     

@@ -4,6 +4,7 @@
 "use client";
 import Header from '../../components/Header'
 import EditorArea from '../../components/EditorArea'
+import EditorInfo from '../../components/EditorInfo';
 import TranspilationArea from '../../components/TranspilationArea'
 import ResponseArea from '../../components/ResponseArea'
 
