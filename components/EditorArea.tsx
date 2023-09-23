@@ -5,8 +5,10 @@ import Compiler from './CompilerButton';
 import SaveButton from './SaveButton';    
 import ChangeButton from './ChangeButton';
 import ClearButton from './ClearButton';
+import StopButton from './StopButton';
+import ChargeButton from './ChargeButton';
 
-const EditorArea: React.FC<{ setTranspiledCode: (code: string) => void }> = ({ setTranspiledCode }) => {
+const EditorArea: React.FC<{ setTranspiledCode: (code: string) => void; setResponse: (code: string) => void }> = ({ setTranspiledCode,setResponse }) => {
     const [editorContent, setEditorContent] = useState('');
     const [inputValue, setInputValue] = useState('');
     const [cursorLine, setCursorLine] = useState(1);
@@ -25,63 +27,6 @@ const EditorArea: React.FC<{ setTranspiledCode: (code: string) => void }> = ({ s
         setCompileRequested(false);
     };
 
-    
-    
-
-    const charge = async () => {
-        if (!inputValue) {
-            alert('El ID es requerido');
-            return;
-        }
-        try {
-            const response = await fetch(`/api/script/${inputValue}`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
-            if (!response.ok) {
-                alert('No se pudo encontrar el script')
-            }
-            else {
-                const data = await response.json()
-                setEditorContent(data.content)
-            }
-        } catch (error) {
-            console.error("Error al cargar", error);
-        }
-    };
-
-    const change = async () => {
-        if (!inputValue) {
-            alert('El ID es requerido');
-            return;
-        }
-        const nuevoId = window.prompt('Ingresa el nuevo ID:');
-        if (nuevoId && nuevoId !== inputValue) {
-            try {
-                const response = await fetch('/api/change', {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ id: inputValue, newId: nuevoId })
-                });
-
-                if (response.ok) {
-                    setInputValue(nuevoId);
-                    alert('ID cambiado exitosamente');
-                } else {
-                    alert('Error al cambiar el ID');
-                }
-            } catch (error) {
-                alert('Error inesperado al cambiar el ID');
-            }
-        } else if (nuevoId === inputValue) {
-            alert('El nuevo ID es el mismo que el actual. No se hizo ningún cambio.');
-        }
-    };
-    
     const updateLineNumbers = () => {
         const lines = editorContent.split('\n').length;
         let lineNumbers = '';
@@ -198,9 +143,8 @@ const EditorArea: React.FC<{ setTranspiledCode: (code: string) => void }> = ({ s
                 <ClearButton onClear={clear} />
                 <ChangeButton inputValue={inputValue} setInputValue={setInputValue} editorContent={editorContent}/>
                 <SaveButton inputValue={inputValue} editorContent={editorContent} setSaveOnClick={setIsSaved} />
-                <button onClick={charge} title="Cargar">
-                    <img src="/cargar.svg" alt="Cargar" />
-                </button>
+                <ChargeButton inputValue={inputValue} setEditorContent={setEditorContent} />
+                <StopButton setTranspiledCode={setTranspiledCode} setResponse={setResponse}/>
                 <button onClick={handleCompileClick} title="Transpilar">
                     <img src="/compile-icon.png" alt="Compile" />
                 </button>
