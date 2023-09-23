@@ -8,7 +8,7 @@ interface Props {
 
 const TranspilationArea: React.FC<Props> = ({ transpiledCode, setResponse }) => {
     
-    const handleEvalClick = async () => {
+    const Evaluar = async () => {
         try {
           const response = await fetch('/api/eval', {
             method: 'POST',
@@ -30,7 +30,7 @@ const TranspilationArea: React.FC<Props> = ({ transpiledCode, setResponse }) => 
         <div className="transpilation-container">
             <div className="transpilation-header">
                 <h3>Área de Transpilación</h3>
-                <button onClick={handleEvalClick}>
+                <button onClick={Evaluar}>
                 <img src="/compile-icon.png" alt="Compile"></img>
                 </button>
             </div>

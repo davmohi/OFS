@@ -31,7 +31,7 @@ const EditorArea: React.FC<{ setTranspiledCode: (code: string) => void }> = ({ s
         }
     };
 
-    const guardar = async () => {
+    const save = async () => {
         if (!inputValue) {
             alert('El ID es requerido');
             return;
@@ -78,7 +78,7 @@ const EditorArea: React.FC<{ setTranspiledCode: (code: string) => void }> = ({ s
     };
     
 
-    const cargar = async () => {
+    const charge = async () => {
         if (!inputValue) {
             alert('El ID es requerido');
             return;
@@ -102,7 +102,7 @@ const EditorArea: React.FC<{ setTranspiledCode: (code: string) => void }> = ({ s
         }
     };
 
-    const editar = async () => {
+    const change = async () => {
         if (!inputValue) {
             alert('El ID es requerido');
             return;
@@ -160,7 +160,7 @@ const EditorArea: React.FC<{ setTranspiledCode: (code: string) => void }> = ({ s
         setCursorLine(prevText.split('\n').length);
     };
 
-    const limpiar = () => {
+    const clear = () => {
         setEditorContent(''); // Limpia el contenido del editor
         setInputValue(''); // Limpia el input del ID
     };
@@ -188,16 +188,16 @@ const EditorArea: React.FC<{ setTranspiledCode: (code: string) => void }> = ({ s
                     value={inputValue}
                     onChange={(e) => setInputValue(e.target.value)}
                 />
-                <button onClick={limpiar} title="Limpiar">
+                <button onClick={clear} title="Limpiar">
                     <img src="/limpiar.svg" alt="Limpiar" />
                 </button>
-                <button onClick={editar} title="Editar">
+                <button onClick={change } title="Editar">
                     <img src="/rename.png" alt="Editar" />
                 </button>
-                <button onClick={guardar} title="Guardar">
+                <button onClick={save} title="Guardar">
                     <img src="/guardar.svg" alt="Guardar" />
                 </button>
-                <button onClick={cargar} title="Cargar">
+                <button onClick={charge} title="Cargar">
                     <img src="/cargar.svg" alt="Cargar" />
                 </button>
                 <button onClick={compileCode} title="Transpilar">
