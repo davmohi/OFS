@@ -8,14 +8,21 @@ import TranspilationArea from '../../components/TranspilationArea'
 import ResponseArea from '../../components/ResponseArea'
 
 import React, { useState } from 'react'
+import OtrosProductos from '../../components/OtrosProductos';
 
 export default function Home() {
   const [transpiledCode, setTranspiledCode] = useState<string>('');
   const [response, setResponse] = useState<string>('');
+  const [mostrarProductos, setMostrarProductos] = useState<boolean>(false);
   
+  const changeWindow = () =>{
+    setMostrarProductos(!mostrarProductos);
+  }
+
   return (
-    <div>
-        <Header />
+    <>
+    {!mostrarProductos? (<div>
+        <Header changeWindow = {changeWindow}/>
         <div className="table-container">
             <table>
                 <tbody>
@@ -31,6 +38,8 @@ export default function Home() {
             </table>
         </div>
         <ResponseArea responseText={response} />
-    </div>
+    </div>)
+    :(<OtrosProductos changeWindow = {changeWindow}/>)}
+    </>
   )
 }
