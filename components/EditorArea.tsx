@@ -55,15 +55,25 @@ const EditorArea: React.FC<EditorAreaProps> = ({ setTranspiledCode, setResponse 
   };
 
   const handleSuggestionSelected = (suggestion: string) => {
+    // Guarda la posición actual del cursor en cursorPos.
     const cursorPos = cursorPosition;
+    // Obtiene el contenido del editor antes de la posición del cursor.
     const beforeCursor = editorContent.substring(0, cursorPos);
+    // Obtiene el contenido del editor después de la posición del cursor.
     const afterCursor = editorContent.substring(cursorPos);
-
-    // Encuentra la posición de inicio de la palabra actual
+    // Encuentra la posición de inicio de la palabra actual.
+    // lastIndexOf(' ') encuentra la última posición de espacio antes del cursor,
+    // y se suma 1 para obtener el inicio de la palabra actual.
     const startOfCurrentWord = beforeCursor.lastIndexOf(' ') + 1;
+    // Obtiene el contenido del editor antes de la palabra actual.
     const beforeWord = beforeCursor.substring(0, startOfCurrentWord);
-    const afterWord = afterCursor.substring(afterCursor.indexOf(' '));
-    const newContent = beforeWord + suggestion + (afterWord.startsWith(' ') ? afterWord : ' ' + afterWord);
+    // Si hay más palabras después de la palabra actual, extrae el contenido del editor después de ella.
+    // Si no hay más palabras, afterWord será un string vacío.
+    const afterWord = afterCursor.indexOf(' ') !== -1 ? afterCursor.substring(afterCursor.indexOf(' ')) : '';
+    // Concatena el contenido antes de la palabra actual, la sugerencia seleccionada,
+    // y el contenido después de la palabra actual.
+    // Si afterWord no comienza con un espacio y no está vacío, se añade un espacio.
+    const newContent = beforeWord + suggestion + (afterWord.startsWith(' ') || afterWord === '' ? afterWord : ' ' + afterWord);
 
     setEditorContent(newContent);
   };
