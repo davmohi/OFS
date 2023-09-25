@@ -67,6 +67,17 @@
 
 /* estilo para EA */
 
+.suggestions-container {
+  display: flex;
+  gap: 8px; /* Espaciado entre los botones */
+  flex-wrap: wrap; /* Si deseas que los botones pasen a la siguiente línea cuando no haya espacio */
+  margin-top: 8px;
+  margin-left: 29px;
+  margin-bottom: 4px;
+}
+
+
+
 .editor-info {
   margin-top: 5px;
   font-size: 10px;

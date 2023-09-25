@@ -1,3 +1,5 @@
+//compenent/editorarea.tsx
+
 import React, { useState, useEffect, useMemo, useRef, ChangeEvent, MouseEvent, KeyboardEvent } from 'react';
 import { EditorInfo, EditorInfoContext } from './EditorInfo';
 import CompileButton from './CompilerButton';
@@ -6,6 +8,7 @@ import ChangeButton from './ChangeButton';
 import ClearButton from './ClearButton';
 import StopButton from './StopButton';
 import ChargeButton from './ChargeButton';
+import Autocomplete from './Autocomplete';
 
 interface EditorAreaProps {
   setTranspiledCode: (code: string) => void;
@@ -18,6 +21,8 @@ const EditorArea: React.FC<EditorAreaProps> = ({ setTranspiledCode, setResponse 
   let [cursorLine, setCursorLine] = useState<number>(1);
   let [isSaved, setIsSaved] = useState<boolean>(false);
   let [compileRequested, setCompileRequested] = useState<boolean>(false);
+  let [cursorPosition, setCursorPosition] = useState<number>(0);
+  let [showSuggestions, setShowSuggestions] = useState(false);
   
   const lineNumbersRef = useRef<HTMLDivElement>(null);
   const editorTextareaRef = useRef<HTMLTextAreaElement>(null);
@@ -46,6 +51,21 @@ const EditorArea: React.FC<EditorAreaProps> = ({ setTranspiledCode, setResponse 
     const cursorPos = (e.target as HTMLTextAreaElement).selectionStart;
     const prevText = editorContent.substring(0, cursorPos);
     setCursorLine(prevText.split('\n').length);
+    setCursorPosition((e.target as HTMLTextAreaElement).selectionStart);
+  };
+
+  const handleSuggestionSelected = (suggestion: string) => {
+    const cursorPos = cursorPosition;
+    const beforeCursor = editorContent.substring(0, cursorPos);
+    const afterCursor = editorContent.substring(cursorPos);
+
+    // Encuentra la posición de inicio de la palabra actual
+    const startOfCurrentWord = beforeCursor.lastIndexOf(' ') + 1;
+    const beforeWord = beforeCursor.substring(0, startOfCurrentWord);
+    const afterWord = afterCursor.substring(afterCursor.indexOf(' '));
+    const newContent = beforeWord + suggestion + (afterWord.startsWith(' ') ? afterWord : ' ' + afterWord);
+
+    setEditorContent(newContent);
   };
 
   const handleKeyUp = (e: KeyboardEvent<HTMLTextAreaElement>) => {
@@ -140,14 +160,17 @@ const EditorArea: React.FC<EditorAreaProps> = ({ setTranspiledCode, setResponse 
           ref={editorTextareaRef}
           value={editorContent}
           onChange={handleEditorChange}
-          onClick={handleCursorChange}
           onKeyUp={handleKeyUp}
+          onSelect={handleCursorChange}
+          onFocus={() => setShowSuggestions(true)}
+            onBlur={() => setShowSuggestions(false)}
           placeholder="Escribe tu código aquí..."
         />  
       </div>
       <EditorInfoContext.Provider value={editorInfo}>
         <EditorInfo/>
       </EditorInfoContext.Provider>
+      <Autocomplete inputValue={editorContent} cursorPosition={cursorPosition} onSuggestionSelected={handleSuggestionSelected} showSuggestions={showSuggestions} />
     </div>
   );
 };
