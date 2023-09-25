@@ -172,7 +172,7 @@ const EditorArea: React.FC<EditorAreaProps> = ({ setTranspiledCode, setResponse 
           onChange={handleEditorChange}
           onKeyUp={handleKeyUp}
           onSelect={handleCursorChange}
-          onFocus={() => setShowSuggestions(true)}
+          onFocus={() => setTimeout(() => setShowSuggestions(true), 150)}
           onBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
           placeholder="Escribe tu código aquí..."
         />  
