@@ -33,14 +33,20 @@
 
 
 /* Estilo para TA */
+
+.transpilation-content {
+  display: flex;
+}
+
 .transpilation-container {
   margin: 20px 0;
-  padding: 20px;
+  padding: 20px 20px 5px 0px;
   border: 1px solid #ccc;
   border-radius: 5px;
 }
 
 .transpilation-header {
+  margin-left: 30px;
   margin-bottom: 12px;
   display: flex;
   justify-content: space-between;

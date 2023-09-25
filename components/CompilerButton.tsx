@@ -1,7 +1,13 @@
 // CompileButton.tsx
 import React, { useState } from 'react';
+interface CompileButtonProps {
+    setTranspiledCode: (code: string) => void;
+    editorContent: string;
+    inputValue: string;
+    setFileName: (code: string) => void;
+}
 
-const CompileButton: React.FC<{ setTranspiledCode: (code: string) => void, editorContent: string }> = ({ setTranspiledCode, editorContent }) => {
+const CompileButton: React.FC<CompileButtonProps> = ({ setTranspiledCode, editorContent, inputValue, setFileName }) => {
     const [isCompiling, setIsCompiling] = useState(false);
 
     const compileCode = async () => {
@@ -12,13 +18,13 @@ const CompileButton: React.FC<{ setTranspiledCode: (code: string) => void, edito
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ content: editorContent })
+                body: JSON.stringify({ content: editorContent, id:inputValue })
             });
 
             const data = response.ok ? await response.json() : null;
             // JSON to string
-            const stringifiedData = data;
-            setTranspiledCode(stringifiedData);
+            setFileName(data.filename);
+            setTranspiledCode(data.content);
 
             if (!response.ok) {
                 console.error("Error al compilar");

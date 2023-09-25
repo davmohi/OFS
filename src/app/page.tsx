@@ -1,5 +1,5 @@
 //to run this file, use the command: npm run dev
-
+//app/page.tsx 
 
 "use client";
 import Header from '../../components/Header'
@@ -14,6 +14,7 @@ export default function Home() {
   const [transpiledCode, setTranspiledCode] = useState<string>('');
   const [response, setResponse] = useState<string>('');
   const [mostrarProductos, setMostrarProductos] = useState<boolean>(false);
+  const [fileName, setFileName] = useState<string>('');
   
   const changeWindow = () =>{
     setMostrarProductos(!mostrarProductos);
@@ -28,10 +29,10 @@ export default function Home() {
                 <tbody>
                     <tr>
                         <td className="half-width">
-                          <EditorArea setTranspiledCode={setTranspiledCode} setResponse={setResponse}/>
+                          <EditorArea setTranspiledCode={setTranspiledCode} setResponse={setResponse} setFileName={setFileName}/>
                         </td>
                         <td className="half-width">
-                          <TranspilationArea transpiledCode={transpiledCode} setResponse={setResponse} />
+                          <TranspilationArea transpiledCode={transpiledCode} setResponse={setResponse}  fileName={fileName}/>
                         </td>
                     </tr>
                 </tbody>

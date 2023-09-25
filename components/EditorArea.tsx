@@ -9,13 +9,15 @@ import ClearButton from './ClearButton';
 import StopButton from './StopButton';
 import ChargeButton from './ChargeButton';
 import Autocomplete from './Autocomplete';
+import LineNumbers from './LineNumbers';
 
 interface EditorAreaProps {
   setTranspiledCode: (code: string) => void;
   setResponse: (code: string) => void;
+  setFileName : (code: string) => void;
 }
 
-const EditorArea: React.FC<EditorAreaProps> = ({ setTranspiledCode, setResponse }) => {
+const EditorArea: React.FC<EditorAreaProps> = ({ setTranspiledCode, setResponse, setFileName  }) => {
   let [editorContent, setEditorContent] = useState<string>('');
   let [inputValue, setInputValue] = useState<string>('');
   let [cursorLine, setCursorLine] = useState<number>(1);
@@ -23,6 +25,7 @@ const EditorArea: React.FC<EditorAreaProps> = ({ setTranspiledCode, setResponse 
   let [compileRequested, setCompileRequested] = useState<boolean>(false);
   let [cursorPosition, setCursorPosition] = useState<number>(0);
   let [showSuggestions, setShowSuggestions] = useState(false);
+  let [cursorColumn, setCursorColumn] = useState<number>(1);
   
   const lineNumbersRef = useRef<HTMLDivElement>(null);
   const editorTextareaRef = useRef<HTMLTextAreaElement>(null);
@@ -30,29 +33,26 @@ const EditorArea: React.FC<EditorAreaProps> = ({ setTranspiledCode, setResponse 
   const handleCompileClick = () => setCompileRequested(true);
   const handleCompilationComplete = () => setCompileRequested(false);
 
-  const updateLineNumbers = () => {
-    const lines = editorContent.split('\n').length;
-    return [...Array(lines)].map((_, i) => `${i + 1}\n`).join('');
-  };
-
-  let [lineNumbers, setLineNumbers] = useState<string>(updateLineNumbers());
-
-  useEffect(() => {
-    setLineNumbers(updateLineNumbers());
-    setCursorLine(editorContent.split('\n').length);
-  }, [editorContent]);
-
   const handleEditorChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setEditorContent(e.target.value);
     setIsSaved(false);
   };
 
+  useEffect(() => {
+    setCursorLine(editorContent.split('\n').length);
+  }, [editorContent]);
+
   const handleCursorChange = (e: MouseEvent<HTMLTextAreaElement>) => {
     const cursorPos = (e.target as HTMLTextAreaElement).selectionStart;
     const prevText = editorContent.substring(0, cursorPos);
-    setCursorLine(prevText.split('\n').length);
-    setCursorPosition((e.target as HTMLTextAreaElement).selectionStart);
+    const currentLine = prevText.split('\n').length;
+    const column = cursorLine === 1 ? prevText.length + 1 : prevText.length - prevText.lastIndexOf('\n');
+  
+    setCursorLine(currentLine);
+    setCursorColumn(column);
+    setCursorPosition(cursorPos);
   };
+  
 
   const handleSuggestionSelected = (suggestion: string) => {
     // Guarda la posición actual del cursor en cursorPos.
@@ -138,10 +138,11 @@ const EditorArea: React.FC<EditorAreaProps> = ({ setTranspiledCode, setResponse 
   const editorInfo = useMemo(() => ({
     id: inputValue,
     cursorLine: cursorLine,
+    cursorColumn: cursorColumn,
     totalLines: totalLines,
     totalWords: totalWords,
     isSaved: isSaved,
-  }), [inputValue, cursorLine, totalLines, totalWords, isSaved]);
+  }), [inputValue, cursorLine, cursorColumn, totalLines, totalWords, isSaved]);
 
   return (
     <div className="editor-container">
@@ -159,12 +160,10 @@ const EditorArea: React.FC<EditorAreaProps> = ({ setTranspiledCode, setResponse 
         <SaveButton inputValue={inputValue} editorContent={editorContent} setSaveOnClick={setIsSaved} />
         <ChargeButton inputValue={inputValue} setEditorContent={setEditorContent} />
         <StopButton setTranspiledCode={setTranspiledCode} setResponse={setResponse}/>
-        <CompileButton setTranspiledCode={setTranspiledCode} editorContent={editorContent} />
+        <CompileButton setTranspiledCode={setTranspiledCode} editorContent={editorContent} inputValue={inputValue} setFileName={setFileName}/>
       </div>
       <div className="editor-content">
-        <div className="line-numbers" ref={lineNumbersRef}>
-          <pre>{lineNumbers}</pre>
-        </div>
+        <LineNumbers editorContent={editorContent} /> {/* Usar el nuevo componente aquí */}
         <textarea
           className="editor-textarea"
           ref={editorTextareaRef}
@@ -178,7 +177,7 @@ const EditorArea: React.FC<EditorAreaProps> = ({ setTranspiledCode, setResponse 
         />  
       </div>
       <EditorInfoContext.Provider value={editorInfo}>
-        <EditorInfo/>
+        <EditorInfo showCursorAndSaveInfo={true} />
       </EditorInfoContext.Provider>
       <Autocomplete inputValue={editorContent} cursorPosition={cursorPosition} onSuggestionSelected={handleSuggestionSelected} showSuggestions={showSuggestions} />
     </div>
