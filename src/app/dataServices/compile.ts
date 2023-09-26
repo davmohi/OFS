@@ -7,7 +7,7 @@ export const compileData = async (content: string, id: string) => {
   const timestamp = new Date().toISOString();
   
   const filename = `${id}.js`; // Crear el nombre del archivo
-  const filePath = join(__dirname, '../../../../../codigosjs', filename);
+  const filePath = join(__dirname, '../../../../../scripts.js', filename);
   
   try {
     await writeFile(filePath, content, 'utf-8');

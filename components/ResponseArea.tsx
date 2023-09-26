@@ -1,6 +1,7 @@
 // components/ResponseArea.tsx
 import React from 'react';
 
+// ResponseArea component
 const ResponseArea: React.FC<{ responseText: string }> = ({ responseText }) => {
     return (
         <div className="response-container">

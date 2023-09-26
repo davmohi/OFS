@@ -1,15 +1,14 @@
-//compenent/editorarea.tsx
-
+//components/EditorArea.tsx
 import React, { useState, useEffect, useMemo, useRef, ChangeEvent, MouseEvent, KeyboardEvent } from 'react';
-import { EditorInfo, EditorInfoContext } from './EditorInfo';
-import CompileButton from './CompilerButton';
-import SaveButton from './SaveButton';    
-import ChangeButton from './ChangeButton';
-import ClearButton from './ClearButton';
-import StopButton from './StopButton';
-import ChargeButton from './ChargeButton';
+import { EditorInfo, EditorInfoContext } from './cee/EditorInfo';
+import CompileButton from './buttons/CompilerButton';
+import SaveButton from './buttons/SaveButton';    
+import ChangeButton from './buttons/ChangeButton';
+import ClearButton from './buttons/ClearButton';
+import StopButton from './buttons/StopButton';
+import ChargeButton from './buttons/ChargeButton';
 import Autocomplete from './Autocomplete';
-import LineNumbers from './LineNumbers';
+import LineNumbers from './cee/LineNumbers';
 
 interface EditorAreaProps {
   setTranspiledCode: (code: string) => void;
@@ -18,30 +17,31 @@ interface EditorAreaProps {
 }
 
 const EditorArea: React.FC<EditorAreaProps> = ({ setTranspiledCode, setResponse, setFileName  }) => {
-  let [editorContent, setEditorContent] = useState<string>('');
-  let [inputValue, setInputValue] = useState<string>('');
-  let [cursorLine, setCursorLine] = useState<number>(1);
-  let [isSaved, setIsSaved] = useState<boolean>(false);
-  let [compileRequested, setCompileRequested] = useState<boolean>(false);
-  let [cursorPosition, setCursorPosition] = useState<number>(0);
-  let [showSuggestions, setShowSuggestions] = useState(false);
-  let [cursorColumn, setCursorColumn] = useState<number>(1);
+  const [editorContent, setEditorContent] = useState<string>('');
+  const [inputValue, setInputValue] = useState<string>('');
+  const [cursorLine, setCursorLine] = useState<number>(1);
+  const [isSaved, setIsSaved] = useState<boolean>(false);
+  const [compileRequested, setCompileRequested] = useState<boolean>(false);
+  const [cursorPosition, setCursorPosition] = useState<number>(0);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [cursorColumn, setCursorColumn] = useState<number>(1);
   
   const lineNumbersRef = useRef<HTMLDivElement>(null);
   const editorTextareaRef = useRef<HTMLTextAreaElement>(null);
 
+  // Handler to trigger compilation
   const handleCompileClick = () => setCompileRequested(true);
+
+  // Handler for compilation completion
   const handleCompilationComplete = () => setCompileRequested(false);
 
+  // Handler for editor content change
   const handleEditorChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setEditorContent(e.target.value);
     setIsSaved(false);
   };
 
-  useEffect(() => {
-    setCursorLine(editorContent.split('\n').length);
-  }, [editorContent]);
-
+  // Calculate cursor position and update line and column numbers
   const handleCursorChange = (e: MouseEvent<HTMLTextAreaElement>) => {
     const cursorPos = (e.target as HTMLTextAreaElement).selectionStart;
     const prevText = editorContent.substring(0, cursorPos);
@@ -52,32 +52,21 @@ const EditorArea: React.FC<EditorAreaProps> = ({ setTranspiledCode, setResponse,
     setCursorColumn(column);
     setCursorPosition(cursorPos);
   };
-  
 
+  // Handle suggestion selection from autocomplete
   const handleSuggestionSelected = (suggestion: string) => {
-    // Guarda la posición actual del cursor en cursorPos.
     const cursorPos = cursorPosition;
-    // Obtiene el contenido del editor antes de la posición del cursor.
     const beforeCursor = editorContent.substring(0, cursorPos);
-    // Obtiene el contenido del editor después de la posición del cursor.
     const afterCursor = editorContent.substring(cursorPos);
-    // Encuentra la posición de inicio de la palabra actual.
-    // lastIndexOf(' ') encuentra la última posición de espacio antes del cursor,
-    // y se suma 1 para obtener el inicio de la palabra actual.
     const startOfCurrentWord = beforeCursor.lastIndexOf(' ') + 1;
-    // Obtiene el contenido del editor antes de la palabra actual.
     const beforeWord = beforeCursor.substring(0, startOfCurrentWord);
-    // Si hay más palabras después de la palabra actual, extrae el contenido del editor después de ella.
-    // Si no hay más palabras, afterWord será un string vacío.
     const afterWord = afterCursor.indexOf(' ') !== -1 ? afterCursor.substring(afterCursor.indexOf(' ')) : '';
-    // Concatena el contenido antes de la palabra actual, la sugerencia seleccionada,
-    // y el contenido después de la palabra actual.
-    // Si afterWord no comienza con un espacio y no está vacío, se añade un espacio.
     const newContent = beforeWord + suggestion + (afterWord.startsWith(' ') || afterWord === '' ? afterWord : ' ' + afterWord);
 
     setEditorContent(newContent);
   };
 
+  // Handle arrow key events for cursor movement
   const handleKeyUp = (e: KeyboardEvent<HTMLTextAreaElement>) => {
     const arrowKeys = ['ArrowUp', 'ArrowDown'];
     const isArrowKey = arrowKeys.includes(e.key);
@@ -87,6 +76,7 @@ const EditorArea: React.FC<EditorAreaProps> = ({ setTranspiledCode, setResponse,
     setCursorLine(newCursorLine);
   };
 
+  // Adjust line number container height based on textarea height
   useEffect(() => {
     const lineNumbers = lineNumbersRef.current;
     const editorTextarea = editorTextareaRef.current;
@@ -105,6 +95,7 @@ const EditorArea: React.FC<EditorAreaProps> = ({ setTranspiledCode, setResponse,
     }
   }, []);
 
+  // Adjust textarea height based on content
   useEffect(() => {
     const handleScroll = () => {
       const textarea = editorTextareaRef.current;
@@ -126,6 +117,7 @@ const EditorArea: React.FC<EditorAreaProps> = ({ setTranspiledCode, setResponse,
     }
   }, []);
 
+  // Clear editor content and input value
   const clear = () => {
     setEditorContent('');
     setInputValue('');
@@ -135,6 +127,7 @@ const EditorArea: React.FC<EditorAreaProps> = ({ setTranspiledCode, setResponse,
   const totalLines = editorContent.split('\n').length;
   const totalWords = editorContent.split(/\s+/).filter((word) => word !== '').length;
 
+  // Create editor information object
   const editorInfo = useMemo(() => ({
     id: inputValue,
     cursorLine: cursorLine,
@@ -147,10 +140,10 @@ const EditorArea: React.FC<EditorAreaProps> = ({ setTranspiledCode, setResponse,
   return (
     <div className="editor-container">
       <div className="editor-header">
-        <h3 className="editor-title">Área de Edición</h3>
+        <h3 className="editor-title">Editor Area</h3>
         <input
           type="text"
-          placeholder="Id del código"
+          placeholder="ID"
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
           className="custom-input-placeholder"
@@ -163,7 +156,7 @@ const EditorArea: React.FC<EditorAreaProps> = ({ setTranspiledCode, setResponse,
         <CompileButton setTranspiledCode={setTranspiledCode} editorContent={editorContent} inputValue={inputValue} setFileName={setFileName}/>
       </div>
       <div className="editor-content">
-        <LineNumbers editorContent={editorContent} /> {/* Usar el nuevo componente aquí */}
+        <LineNumbers editorContent={editorContent} /> {/* Use the new component here */}
         <textarea
           className="editor-textarea"
           ref={editorTextareaRef}
@@ -185,3 +178,4 @@ const EditorArea: React.FC<EditorAreaProps> = ({ setTranspiledCode, setResponse,
 };
 
 export default EditorArea;
+

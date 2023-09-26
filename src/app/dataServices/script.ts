@@ -1,7 +1,7 @@
 import { promises as fs } from 'fs';
 import { join } from 'path';
 
-const filesDirectory = join(process.cwd(), 'codigos');
+const filesDirectory = join(process.cwd(), 'scripts');
 
 export const write = async(id: string, content: string) => {
   const filePath = join(filesDirectory, id);
@@ -9,6 +9,7 @@ export const write = async(id: string, content: string) => {
 }
 
 export const read = async(id: string) =>{
+  
   const filePath = join(filesDirectory, id);
   const fileExists = await fs.access(filePath).then(() => true).catch(() => false);
   if (!fileExists) {
