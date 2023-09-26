@@ -1,4 +1,5 @@
 // components/ResponseArea.tsx
+
 import React from 'react';
 
 // ResponseArea component

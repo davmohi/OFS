@@ -1,4 +1,4 @@
-//components/TranspilationArea.tsx
+// components/Transpilation.tsx
 
 import React, { useState, useEffect, useMemo } from 'react';
 import LineNumbers from './cee/LineNumbers';
@@ -12,21 +12,14 @@ interface Props {
 }
 
 const TranspilationArea: React.FC<Props> = ({ transpiledCode, setResponse, fileName }) => {
-  // State for cursor position and save status
+  // Constants for editor states and data
   const [cursorLine, setCursorLine] = useState<number>(1);
   const [cursorColumn, setCursorColumn] = useState<number>(1);
   const [isSaved, setIsSaved] = useState<boolean>(true);
 
-  // Update cursorLine based on transpiledCode changes
-  useEffect(() => {
-    setCursorLine(transpiledCode.split('\n').length);
-  }, [transpiledCode]);
-
-  // Calculate total lines and words
   const totalLines = transpiledCode.split('\n').length;
   const totalWords = transpiledCode.split(/\s+/).filter((word) => word !== '').length;
 
-  // Create editorInfo object to provide context to children components
   const editorInfo = useMemo(() => ({
     id: fileName,
     cursorLine,
@@ -36,16 +29,20 @@ const TranspilationArea: React.FC<Props> = ({ transpiledCode, setResponse, fileN
     isSaved,
   }), [fileName, cursorLine, cursorColumn, totalLines, totalWords, isSaved]);
 
-  // Handle code evaluation
+  // Constants for error and success modals
+  const [isErrorModalOpen, setIsErrorModalOpen] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>('');
+
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState<boolean>(false);
+  const [successMessage, setSuccessMessage] = useState<string>('');
+
+  // Function to evaluate the code
   const evaluateCode = async () => {
     const isEmptyTranspiledCode = transpiledCode.trim() === '';
 
     try {
-      if (isEmptyTranspiledCode) {
-        throw new Error('El contenido del transpilador está vacío. Compile el código antes de evaluarlo.');
-      }
+      if (isEmptyTranspiledCode) throw new Error('El contenido del transpilador está vacío. Compile el código antes de evaluar.');
 
-      // Send a request to evaluate the code
       const response = await fetch('/api/eval', {
         method: 'POST',
         headers: {
@@ -54,24 +51,23 @@ const TranspilationArea: React.FC<Props> = ({ transpiledCode, setResponse, fileN
         body: JSON.stringify({ code: transpiledCode }),
       });
 
-      // Parse and set the response data
+      if (response.ok) {
+        setSuccessMessage('Eval_Fake read');
+        setIsSuccessModalOpen(true);
+      } else {
+        throw new Error('Error al evaluar el código');
+      }
+
       const data = await response.json();
       console.log(data);
       setResponse(data);
     } catch (error) {
       if (error instanceof Error) {
-        // Handle and display the error using a modal
         setErrorMessage(`Error al evaluar el código: ${error.message}`);
+        setIsErrorModalOpen(true);
       }
-    } finally {
-      // Open the error modal
-      setIsErrorModalOpen(true);
     }
   };
-
-  // State for error modal
-  const [isErrorModalOpen, setIsErrorModalOpen] = useState<boolean>(false);
-  const [errorMessage, setErrorMessage] = useState<string>('');
 
   return (
     <div className="transpilation-container">
@@ -100,6 +96,14 @@ const TranspilationArea: React.FC<Props> = ({ transpiledCode, setResponse, fileN
           onClose={() => setIsErrorModalOpen(false)}
           title="Warning"
           content={errorMessage}
+        />
+      )}
+      {isSuccessModalOpen && (
+        <Modal
+          isOpen={isSuccessModalOpen}
+          onClose={() => setIsSuccessModalOpen(false)}
+          title="Success"
+          content={successMessage}
         />
       )}
     </div>
