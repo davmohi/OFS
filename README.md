@@ -25,15 +25,23 @@ pnpm dev
 ```
 
 ## Local Deployment
+First install dependencies:
+```bash
+npm install
+# or
+yarn install
+# or
+pnpm install
+```
 
-First, buid the code:
+Then, buid the code:
 
 ```bash
-npm run buid
+npm run build
 # or
-yarn buid
+yarn build
 # or
-pnpm buid
+pnpm build
 ```
 
 Then, start the server:
