@@ -11,11 +11,9 @@ interface ModalProps {
 }
 
 // Modal component
-const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, content, children }) => {
-  // If the modal is not open, return null to render nothing
-  if (!isOpen) return null;
-
-  return (
+const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, content, children }) => !isOpen
+  ? null
+  : (
     <div className="modal">
       <div className="modal-content">
         <span className="close-button" onClick={onClose}>&times;</span>
@@ -26,6 +24,5 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, content, children
       </div>
     </div>
   );
-};
 
 export default Modal;

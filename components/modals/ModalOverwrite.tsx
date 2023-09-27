@@ -13,8 +13,7 @@ const ModalOverwrite: React.FC<ModalOverwriteProps> = ({
   message,
   onConfirm,
   onCancel,
-}) => {
-  return (
+}) => (
     <div className="modal">
       <div className="modal-content">
         <p>{message}</p> {/* Display the provided message */}
@@ -25,6 +24,5 @@ const ModalOverwrite: React.FC<ModalOverwriteProps> = ({
       </div>
     </div>
   );
-};
 
 export default ModalOverwrite;

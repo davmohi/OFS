@@ -16,7 +16,8 @@ const ChangeButton: React.FC<{
   const handleChange = async (newId: string) => {
     setChangeModalOpen(false);
 
-    if (newId && newId !== inputValue) {
+    newId && newId !== inputValue
+    ?(async()=>{
       try {
         const response = await fetch('/api/change', {
           method: 'PUT',
@@ -26,22 +27,21 @@ const ChangeButton: React.FC<{
           body: JSON.stringify({ id: inputValue, newId }),
         });
 
-        if (response.ok) {
-          setInputValue(newId);
-          setModalContent('ID cambiada exitosamente');
-          setModalOpen(true);
-        } else {
-          setModalContent('Error al cambiar la ID');
-          setModalOpen(true);
-        }
+        response.ok
+        ?(setInputValue(newId),
+        setModalContent('ID cambiada exitosamente'),
+        setModalOpen(true))
+        :(setModalContent('Error al cambiar la ID'),
+        setModalOpen(true));
+
       } catch (error) {
         setModalContent('Error inesperado al cambiar ID');
         setModalOpen(true);
       }
-    } else if (newId === inputValue) {
-      setModalContent('El nuevo ID es el mismo que el actual. No se hicieron cambios.');
-      setModalOpen(true);
-    }
+    })()
+    :(
+      setModalContent('El nuevo ID es el mismo que el actual. No se hicieron cambios.'),
+      setModalOpen(true));
   };
 
   const closeModal = () => {
@@ -50,12 +50,11 @@ const ChangeButton: React.FC<{
 
   // Function to handle the change button click
   const change = async () => {
-    if (!inputValue) {
-      setModalContent('ID es requerido');
-      setModalOpen(true);
-    } else {
-      setChangeModalOpen(true);
-    }
+    !inputValue
+    ?(setModalContent('ID es requerido'),
+    setModalOpen(true))
+    :setChangeModalOpen(true);
+
   };
 
   return (

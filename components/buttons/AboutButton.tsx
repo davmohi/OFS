@@ -27,13 +27,14 @@ const AboutButton: React.FC = () => {
   const fetchAboutInfo = async () => {
     try {
       const response = await fetch('api/about');
-      if (response.ok) {
+
+      response.ok
+      ?(async()=>{
         const data = await response.json();
         setTeamInfo(data);
         setShowAbout(true);
-      } else {
-        console.error("Error fetching information");
-      }
+      })()
+      :console.error("Error fetching information");
     } catch (error) {
       console.error("Error fetching information", error);
     }
@@ -74,9 +75,7 @@ const AboutButton: React.FC = () => {
   // Add event listener for the Escape key when modal is open
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        closeModal();
-      }
+      event.key === 'Escape' && closeModal();
     };
 
     showAbout && window.addEventListener('keydown', handleKeyDown);

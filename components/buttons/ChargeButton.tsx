@@ -27,11 +27,11 @@ const ChargeButton: React.FC<ChargeButtonProps> = ({ inputValue, setEditorConten
 
   // Function to handle the charge button click
   const handleChargeClick = async () => {
-    if (!inputValue) {
-      openModal('Warning', 'ID es requerido');
-    } else {
-      setLoading(true);
 
+    !inputValue
+    ?openModal('Warning', 'ID es requerido')
+    :(setLoading(true),
+    async()=>{
       try {
         const response = await fetch(`/api/script/${inputValue}`, {
           method: 'GET',
@@ -40,19 +40,20 @@ const ChargeButton: React.FC<ChargeButtonProps> = ({ inputValue, setEditorConten
           },
         });
 
-        if (!response.ok) {
-          openModal('Error', 'Script no encontrado');
-        } else {
+        !response.ok
+        ?openModal('Error', 'Script no encontrado')
+        :(console.log("AAAAAAAAAAA"),
+          async()=>{
           const data = await response.json();
           openModal('Success', 'Carga exitosa');
           setEditorContent(data.content);
-        }
+        })()
       } catch (error) {
         console.error('Error mientras carga', error);
       } finally {
         setLoading(false);
       }
-    }
+    })()
   };
 
   return (

@@ -81,7 +81,8 @@ const EditorArea: React.FC<EditorAreaProps> = ({ setTranspiledCode, setResponse,
     const lineNumbers = lineNumbersRef.current;
     const editorTextarea = editorTextareaRef.current;
   
-    if (lineNumbers && editorTextarea) {
+    lineNumbers && editorTextarea
+    ?(() =>{
       const resizeObserver = new ResizeObserver(() => {
         const textareaHeight = editorTextarea.clientHeight;
         lineNumbers.style.height = `${textareaHeight - 10}px`;
@@ -92,29 +93,31 @@ const EditorArea: React.FC<EditorAreaProps> = ({ setTranspiledCode, setResponse,
       return () => {
         resizeObserver.disconnect();
       };
-    }
+    })()
+    :null
   }, []);
 
   // Adjust textarea height based on content
   useEffect(() => {
     const handleScroll = () => {
       const textarea = editorTextareaRef.current;
-      if (textarea) {
-        textarea.style.height = 'auto';
-        const linesCount = textarea.value.split('\n').length;
-        const lineHeight = 19.15;
-        textarea.style.height = `${Math.max(linesCount * lineHeight, 300)}px`;
+
+      textarea
+      ?(() => {
+        console.log("a")
       }
+      )()
+      :null
     };
 
     const textarea = editorTextareaRef.current;
-    if (textarea) {
-      textarea.addEventListener('input', handleScroll);
 
-      return () => {
-        textarea.removeEventListener('input', handleScroll);
-      };
-    }
+    textarea
+    ?(textarea.addEventListener('input', handleScroll),
+    () => {
+      textarea.removeEventListener('input', handleScroll);
+    })
+    :null
   }, []);
 
   // Clear editor content and input value
@@ -152,7 +155,7 @@ const EditorArea: React.FC<EditorAreaProps> = ({ setTranspiledCode, setResponse,
         <ChangeButton inputValue={inputValue} setInputValue={setInputValue} editorContent={editorContent}/>
         <SaveButton inputValue={inputValue} editorContent={editorContent} setSaveOnClick={setIsSaved} />
         <ChargeButton inputValue={inputValue} setEditorContent={setEditorContent} />
-        <StopButton setTranspiledCode={setTranspiledCode} setResponse={setResponse}/>
+        <StopButton setTranspiledCode={setTranspiledCode} setResponse={setResponse} setFileName={setFileName}/>
         <CompileButton setTranspiledCode={setTranspiledCode} editorContent={editorContent} inputValue={inputValue} setFileName={setFileName}/>
       </div>
       <div className="editor-content">

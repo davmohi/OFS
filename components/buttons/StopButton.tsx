@@ -4,12 +4,14 @@ import React from 'react';
 interface StopButtonProps {
   setTranspiledCode: React.Dispatch<string>;
   setResponse: React.Dispatch<string>;
+  setFileName:(code: string) => void;
 }
 
-const StopButton: React.FC<StopButtonProps> = ({ setTranspiledCode, setResponse }) => {
+const StopButton: React.FC<StopButtonProps> = ({ setTranspiledCode, setResponse, setFileName }) => {
   const handleStopClick = () => {
     setTranspiledCode('');
     setResponse('');
+    setFileName('');
   };
 
   return (

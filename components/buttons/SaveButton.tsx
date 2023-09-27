@@ -28,23 +28,18 @@ const SaveButton: React.FC<{
   };
 
   // Check if the file should be overwritten
-  const overwriteConfirmation = async () => {
-    const exists = await checkFileExists();
-    return exists;
-  };
+  const overwriteConfirmation = async () => await checkFileExists();
 
   // Handle the save button click
   const handleSaveClick = async () => {
     const exists = await overwriteConfirmation();
 
-    if (!inputValue) {
-      setAlertMessage('El ID es requerido');
-      setShowAlertModal(true);
-    } else if (exists) {
-      setShowConfirmationModal(true);
-    } else {
-      saveScript();
-    }
+    !inputValue
+    ?(setAlertMessage('El ID es requerido'),
+    setShowAlertModal(true))
+    :exists
+    ?setShowConfirmationModal(true)
+    :saveScript()
   };
 
   // Save the script
@@ -58,17 +53,16 @@ const SaveButton: React.FC<{
         body: JSON.stringify({ content: editorContent }),
       });
 
-      if (response.ok) {
-        setSaveOnClick(true);
-        setAlertMessage('Script guardado exitosamente');
-        setShowAlertModal(true);
-      } else if (response.status === 400) {
-        setAlertMessage('ID y contenido son requeridos');
-        setShowAlertModal(true);
-      } else {
-        setAlertMessage('Hubo un error inesperado al guardar el script');
-        setShowAlertModal(true);
-      }
+      response.ok
+      ?(setSaveOnClick(true),
+      setAlertMessage('Script guardado exitosamente'),
+      setShowAlertModal(true))
+      :response.status === 400
+      ?(setAlertMessage('ID y contenido son requeridos'),
+      setShowAlertModal(true))
+      :(setAlertMessage('Hubo un error inesperado al guardar el script'),
+      setShowAlertModal(true));
+      
     } catch (error) {
       console.error('Error al guardar', error);
       setAlertMessage('No se pudo guardar el script');

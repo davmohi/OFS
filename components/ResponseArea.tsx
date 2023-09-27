@@ -3,8 +3,7 @@
 import React from 'react';
 
 // ResponseArea component
-const ResponseArea: React.FC<{ responseText: string }> = ({ responseText }) => {
-    return (
+const ResponseArea: React.FC<{ responseText: string }> = ({ responseText }) =>  (
         <div className="response-container">
             <h3>Área de Respuesta</h3>
             <textarea
@@ -15,6 +14,5 @@ const ResponseArea: React.FC<{ responseText: string }> = ({ responseText }) => {
             />
         </div>
     );
-};
 
 export default ResponseArea;

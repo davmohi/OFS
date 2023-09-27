@@ -25,9 +25,9 @@ const ModalChange: React.FC<ModalChangeProps> = ({ isOpen, onClose, onAccept }) 
   };
 
   // If the modal is not open, return null to render nothing
-  if (!isOpen) return null;
-
-  return (
+  return !isOpen
+  ?null
+  :(
     <div className="modal">
       <div className="modal-content">
         <span className="close-button" onClick={closeModal}>&times;</span>
