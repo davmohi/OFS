@@ -44,6 +44,7 @@ const ChangeButton: React.FC<{
       setModalOpen(true));
   };
 
+  //Function to close the modal 
   const closeModal = () => {
     setModalOpen(false);
   };

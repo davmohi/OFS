@@ -1,7 +1,9 @@
 
 import { NextResponse } from 'next/server';
-import { rename } from '../../dataServices/script'; // Asegúrate de ajustar la ruta de importación correctamente
+import { rename } from '../../dataServices/script'; // Make sure to set the import path correctly
 
+
+//Allows the renaming of a script
 export const PUT = async (req: Request) => {
   try {
     const requestData = await req.json();

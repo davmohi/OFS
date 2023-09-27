@@ -2,6 +2,7 @@
 import { NextResponse } from 'next/server';
 import { write, read,rename } from '../../../dataServices/script'; // Asegúrate de ajustar la ruta de importación correctamente
 
+//Returns a script by its name
 export const POST = async (req: Request, { params }: { params: { id: string } }) => {
   try {
     const id = params.id;
@@ -19,6 +20,8 @@ export const POST = async (req: Request, { params }: { params: { id: string } })
   }
 }
 
+
+//Receives a script and an id and sends the script to be saved with this id
 export const GET = async (req: Request, { params }: { params: { id: string } }) => {
   try {
     const id = params.id;

@@ -3,11 +3,14 @@ import { join } from 'path';
 
 const filesDirectory = join(process.cwd(), 'scripts');
 
+//Saves the script with the Id
 export const write = async(id: string, content: string) => {
   const filePath = join(filesDirectory, id);
   await fs.writeFile(filePath, content, 'utf8');
 }
 
+
+//Retrieves and returns a script by its id
 export const read = async(id: string) =>{
   
   const filePath = join(filesDirectory, id);
@@ -18,6 +21,7 @@ export const read = async(id: string) =>{
   return await fs.readFile(filePath, 'utf8');
 }
 
+//Renames a script
 export const rename = async(oldId: string, newId: string) =>{
     const oldFilePath = join(filesDirectory, oldId);
     const newFilePath = join(filesDirectory, newId);

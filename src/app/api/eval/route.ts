@@ -2,6 +2,7 @@
 import { NextResponse } from 'next/server';
 import { evalData } from '../../dataServices/eval'; 
 
+//Receives the scrip, sends it to be evaluated and the result is returned
 export const POST = async(req: Request)=> {
     try{
         const data = await evalData();

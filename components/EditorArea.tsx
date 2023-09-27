@@ -10,6 +10,7 @@ import ChargeButton from './buttons/ChargeButton';
 import Autocomplete from './Autocomplete';
 import LineNumbers from './cee/LineNumbers';
 
+//Define types for the editor area props
 interface EditorAreaProps {
   setTranspiledCode: (code: string) => void;
   setResponse: (code: string) => void;

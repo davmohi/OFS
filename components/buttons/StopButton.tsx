@@ -1,6 +1,7 @@
 //components/StopButton.tsx
 import React from 'react';
 
+// Define types for the stop button props
 interface StopButtonProps {
   setTranspiledCode: React.Dispatch<string>;
   setResponse: React.Dispatch<string>;

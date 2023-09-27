@@ -5,6 +5,7 @@ import LineNumbers from './cee/LineNumbers';
 import { EditorInfo, EditorInfoContext } from './cee/EditorInfo';
 import Modal from './modals/Modal';
 
+//Define types for the props used
 interface Props {
   transpiledCode: string;
   setResponse: (response: string) => void;

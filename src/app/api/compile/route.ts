@@ -2,6 +2,8 @@
 import { NextResponse } from 'next/server';
 import { compileData } from '../../dataServices/compile'; 
 
+
+//Receives the scrip, sends it to be compiled and the result is returned
 export const POST = async (req: Request) => {
   try {
     const requestData = await req.json();

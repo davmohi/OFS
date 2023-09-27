@@ -2,6 +2,7 @@
 import { NextResponse } from 'next/server';
 import * as aboutData from '../../dataServices/keywords.json';
 
+//Returns a list of reserved words
 export const GET = async (req: Request) => {
   try {
     return NextResponse.json(aboutData, { status: 200 });

@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import Modal from '../modals/Modal';
 
+// Define types for the change button props
 interface ChargeButtonProps {
   inputValue: string;
   setEditorContent: (content: string) => void;

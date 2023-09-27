@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
+//Define types for the auto complete props
 interface AutocompleteProps {
   inputValue: string;
   cursorPosition: number;

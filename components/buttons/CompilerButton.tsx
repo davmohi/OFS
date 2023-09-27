@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import Modal from '../modals/Modal';
 
+// Define types for the compile button props
 interface CompileButtonProps {
     setTranspiledCode: (code: string) => void;
     editorContent: string;

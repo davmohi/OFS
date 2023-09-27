@@ -3,10 +3,12 @@
 import { writeFile } from 'fs/promises';
 import { join } from 'path';
 
+
+//"Compiles" the code (for the moment it only returns the same code with the date and saves the compiled code in a .js).
 export const compileData = async (content: string, id: string) => {
   const timestamp = new Date().toISOString();
   
-  const filename = `${id}.js`; // Crear el nombre del archivo
+  const filename = `${id}.js`; // Sets the name of the script
   const filePath = join(__dirname, '../../../../../scripts.js', filename);
   
   try {
