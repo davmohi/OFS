@@ -4,6 +4,16 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
+To install dependencies:
+```bash
+npm install
+# or
+yarn install
+# or
+pnpm install
+```
+
+
 First, run the development server:
 
 ```bash
@@ -13,6 +23,33 @@ yarn dev
 # or
 pnpm dev
 ```
+
+## Local Deployment
+
+First, buid the code:
+
+```bash
+npm run buid
+# or
+yarn buid
+# or
+pnpm buid
+```
+
+Then, start the server:
+
+```bash
+npm run start
+# or
+yarn start
+# or
+pnpm start
+```
+If another por is required:
+```bash
+npm run start -- --port 8000
+```
+
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
