@@ -105,7 +105,10 @@ const EditorArea: React.FC<EditorAreaProps> = ({ setTranspiledCode, setResponse,
 
       textarea
       ?(() => {
-        console.log("a")
+        textarea.style.height = 'auto'; // Temporalmente setea la altura a auto para obtener el scrollHeight correcto
+        const linesCount = textarea.value.split('\n').length;
+        const lineHeight = 19.15;
+        textarea.style.height = `${Math.max(linesCount * lineHeight, 300)}px`; // Asegura que la altura sea al menos 300px
       }
       )()
       :null

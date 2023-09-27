@@ -27,12 +27,12 @@ const EditorInfo: React.FC<EditorInfoProps> = ({ showCursorAndSaveInfo = true })
   return editorInfo ? (
     <div className="editor-info" style={{ display: 'flex' }}>
       <p className='editor-info-p'>ID: {editorInfo.id}</p>
-      <p className='editor-info-p'>Linea: {editorInfo.totalLines}</p>
+      <p className='editor-info-p'>Lineas: {editorInfo.totalLines}</p>
       <p className='editor-info-p'>Palabras: {editorInfo.totalWords}</p>
       {showCursorAndSaveInfo && (
         <>
-          <p className='editor-info-p'>Cursor: {editorInfo.cursorLine}</p>
-          <p className='editor-info-p'>Columna: {editorInfo.cursorColumn}</p>
+          <p className='editor-info-p'>Linea Cursor: {editorInfo.cursorLine}</p>
+          <p className='editor-info-p'>Columna Cursor: {editorInfo.cursorColumn}</p>
           <p className='editor-info-p'>Guardado: {editorInfo.isSaved ? 'Si' : 'No'}</p>
         </>
       )}

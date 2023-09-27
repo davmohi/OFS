@@ -1,6 +1,6 @@
 // components/Transpilation.tsx
 
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo,useRef } from 'react';
 import LineNumbers from './cee/LineNumbers';
 import { EditorInfo, EditorInfoContext } from './cee/EditorInfo';
 import Modal from './modals/Modal';
@@ -17,6 +17,8 @@ const TranspilationArea: React.FC<Props> = ({ transpiledCode, setResponse, fileN
   const [cursorLine, setCursorLine] = useState<number>(1);
   const [cursorColumn, setCursorColumn] = useState<number>(1);
   const [isSaved, setIsSaved] = useState<boolean>(true);
+  const transpilationTextareaRef = useRef<HTMLTextAreaElement>(null);
+  const lineNumbersRef = useRef<HTMLDivElement>(null);
 
   const totalLines = transpiledCode.split('\n').length;
   const totalWords = transpiledCode.split(/\s+/).filter((word) => word !== '').length;
@@ -36,6 +38,53 @@ const TranspilationArea: React.FC<Props> = ({ transpiledCode, setResponse, fileN
 
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState<boolean>(false);
   const [successMessage, setSuccessMessage] = useState<string>('');
+
+  // Adjust line number container height based on textarea height
+  useEffect(() => {
+    const lineNumbers = lineNumbersRef.current;
+    const editorTextarea = transpilationTextareaRef.current;
+  
+    lineNumbers && editorTextarea
+    ?(() =>{
+      const resizeObserver = new ResizeObserver(() => {
+        const textareaHeight = editorTextarea.clientHeight;
+        lineNumbers.style.height = `${textareaHeight - 10}px`;
+      });
+  
+      resizeObserver.observe(editorTextarea);
+  
+      return () => {
+        resizeObserver.disconnect();
+      };
+    })()
+    :null
+  }, []);
+
+    // Adjust textarea height based on content
+    useEffect(() => {
+      const handleScroll = () => {
+        const textarea = transpilationTextareaRef.current;
+  
+        textarea
+        ?(() => {
+          textarea.style.height = 'auto'; // Temporalmente setea la altura a auto para obtener el scrollHeight correcto
+          const linesCount = textarea.value.split('\n').length;
+          const lineHeight = 19.15;
+          textarea.style.height = `${Math.max(linesCount * lineHeight, 300)}px`; // Asegura que la altura sea al menos 300px
+        }
+        )()
+        :null
+      };
+  
+      const textarea = transpilationTextareaRef.current;
+  
+      textarea
+      ?(textarea.addEventListener('input', handleScroll),
+      () => {
+        textarea.removeEventListener('input', handleScroll);
+      })
+      :null
+    }, []);
 
   // Function to evaluate the code
   const evaluateCode = async () => {
@@ -85,6 +134,7 @@ const TranspilationArea: React.FC<Props> = ({ transpiledCode, setResponse, fileN
         <textarea
           className="transpilation-textarea"
           value={transpiledCode}
+          ref = {transpilationTextareaRef}
           readOnly
           placeholder="El código transpilado se mostrará aquí..."
         />
