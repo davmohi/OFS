@@ -19,6 +19,6 @@ export const compileData = async (content: string, id: string) => {
   
   return {
     content: `${timestamp}\n${content}`,
-    filename, // Incluir el nombre del archivo en la respuesta
+    filename, // includes the filename in the response
   };
 };

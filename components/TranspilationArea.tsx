@@ -60,31 +60,25 @@ const TranspilationArea: React.FC<Props> = ({ transpiledCode, setResponse, fileN
     :null
   }, []);
 
-    // Adjust textarea height based on content
-    useEffect(() => {
-      const handleScroll = () => {
-        const textarea = transpilationTextareaRef.current;
-  
-        textarea
-        ?(() => {
-          textarea.style.height = 'auto'; // Temporalmente setea la altura a auto para obtener el scrollHeight correcto
-          const linesCount = textarea.value.split('\n').length;
-          const lineHeight = 19.15;
-          textarea.style.height = `${Math.max(linesCount * lineHeight, 300)}px`; // Asegura que la altura sea al menos 300px
-        }
-        )()
-        :null
+  // Adjust textarea height based on its content whenever transpiledCode changes
+  useEffect(() => {
+    const transpilationTextarea = transpilationTextareaRef.current;
+
+    transpilationTextarea 
+    ? (() => {
+      const adjustTextareaHeight = () => {
+        transpilationTextarea.style.height = 'auto'; // Temporalmente ajusta la altura a 'auto' para obtener el scrollHeight correcto
+        const linesCount = transpilationTextarea.value.split('\n').length;
+        const lineHeight = 19.15; // Asegúrate de ajustar este valor según el lineHeight real de tu textarea
+        const extraHeight = 10; // Puedes ajustar este valor según sea necesario
+        transpilationTextarea.style.height = `${Math.max(linesCount * lineHeight, 300) + extraHeight}px`;
       };
-  
-      const textarea = transpilationTextareaRef.current;
-  
-      textarea
-      ?(textarea.addEventListener('input', handleScroll),
-      () => {
-        textarea.removeEventListener('input', handleScroll);
-      })
-      :null
-    }, []);
+      
+      adjustTextareaHeight(); // Ajusta la altura inicialmente
+    })()
+    : null;
+  }, [transpiledCode]);
+
 
   // Function to evaluate the code
   const evaluateCode = async () => {

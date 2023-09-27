@@ -8,7 +8,7 @@ import TranspilationArea from '../../components/TranspilationArea'
 import ResponseArea from '../../components/ResponseArea'
 
 import React, { useState } from 'react'
-import OtrosProductos from '../../components/buttons/OtrosProductos';
+import OtrosProductos from '../../components/buttons/OtherProducts';
 
 export default function Home() {
   const [transpiledCode, setTranspiledCode] = useState<string>('');

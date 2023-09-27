@@ -1,7 +1,8 @@
 import Link from 'next/link';
-import styles from './Page.module.css'; // Asume que tienes un archivo Page.module.css en la misma carpeta
+import styles from './Page.module.css'; 
 
 export default function Page() {
+  // returns the content of the other page
   return (
     <div className={styles.otherPage}>
       <h1>Nuestros Servicios</h1>
@@ -20,7 +21,6 @@ export default function Page() {
           <h2>Asesorías en Programación</h2>
           <p>Brindamos asesorías y consultorías para resolver tus dudas y problemas de programación.</p>
         </li>
-        {/* Puedes agregar más servicios aquí */}
       </ul>
       
       <Link href="/" className={styles.backLink}>

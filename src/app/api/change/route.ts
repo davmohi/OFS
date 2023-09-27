@@ -1,6 +1,6 @@
 
 import { NextResponse } from 'next/server';
-import { rename } from '../../dataServices/script'; // Make sure to set the import path correctly
+import { rename } from '../../dataServices/script'; 
 
 
 //Allows the renaming of a script

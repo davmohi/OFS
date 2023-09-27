@@ -1,8 +1,8 @@
-//components/OtrosProductos.tsx
+//components/OtherProducts.tsx
 import React from 'react';
 
-// OtrosProductos component
-const OtrosProductos: React.FC<{ changeWindow: () => void }> = ({ changeWindow }) => {
+// OtherProducts component
+const OtherProducts: React.FC<{ changeWindow: () => void }> = ({ changeWindow }) => {
   // Event handler for the button click
   const handleClick = () => {
     changeWindow(); // Calls the changeWindow function when the button is clicked
@@ -36,4 +36,4 @@ const OtrosProductos: React.FC<{ changeWindow: () => void }> = ({ changeWindow }
   );
 }
 
-export default OtrosProductos;
+export default OtherProducts;
