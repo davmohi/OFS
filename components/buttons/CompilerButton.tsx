@@ -49,7 +49,7 @@ const CompileButton: React.FC<CompileButtonProps> = ({ setTranspiledCode, editor
                 });
                 const data = response.ok ? await response.json() : null;
 
-                setFileName(data?.filename || ''); 
+                setFileName(data?.filename || '');
                 setTranspiledCode(data?.content || '');
 
                 !response.ok && console.error("Compilation error");
@@ -64,7 +64,7 @@ const CompileButton: React.FC<CompileButtonProps> = ({ setTranspiledCode, editor
     return (
         <div>
             <button onClick={compileCode} title="Compile">
-                <img src="/compile-icon.png" alt="Compile" />
+                <img src="/compile-icon.png" alt="Compile" draggable="false"/>
             </button>
 
             <Modal

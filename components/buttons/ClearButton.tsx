@@ -15,7 +15,7 @@ const ClearButton: React.FC<ClearButtonProps> = ({ onClear }) => {
 
   return (
     <button onClick={handleClearClick} title="Limpiar">
-      <img src="/limpiar.svg" alt="Limpiar" />
+      <img src="/limpiar.svg" alt="Limpiar" draggable="false"/>
     </button>
   );
 };

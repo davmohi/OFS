@@ -61,7 +61,7 @@ const ChangeButton: React.FC<{
   return (
     <div>
       <button onClick={change} title="Editar ID">
-        <img src="/rename.png" alt="Edit" />
+        <img src="/rename.png" alt="Edit" draggable="false"/>
       </button>
 
       {/* Render the ModalChange to enter the new ID */}

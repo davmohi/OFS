@@ -60,7 +60,7 @@ const ChargeButton: React.FC<ChargeButtonProps> = ({ inputValue, setEditorConten
   return (
     <div>
       <button onClick={handleChargeClick} title="Cargar">
-        <img src="/cargar.svg" alt="Load" />
+        <img src="/cargar.svg" alt="Load" draggable="false"/>
       </button>
       {/* Render the Modal component here */}
       {modalOpen && modalTitle && modalContent && (

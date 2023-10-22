@@ -89,7 +89,7 @@ const SaveButton: React.FC<{
   return (
     <>
       <button onClick={handleSaveClick} title="Guardar">
-        <img src="/guardar.svg" alt="Guardar" />
+        <img src="/guardar.svg" alt="Guardar" draggable="false"/>
       </button>
       {/* Alert modal */}
       <Modal

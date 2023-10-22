@@ -94,7 +94,7 @@ const TranspilationArea: React.FC<Props> = ({ transpiledCode, setResponse, fileN
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ code: transpiledCode }),
+        body: JSON.stringify({ code: transpiledCode, fileName: fileName }),
       });
 
       response.ok
@@ -120,7 +120,7 @@ const TranspilationArea: React.FC<Props> = ({ transpiledCode, setResponse, fileN
         <h3>Transpilation Area</h3>
         <input type="text" value={fileName} readOnly />
         <button onClick={evaluateCode} title='Evaluar'>
-          <img src="/compile-icon.png" alt="Compile" />
+          <img src="/compile-icon.png" alt="Compile" draggable="false"/>
         </button>
       </div>
       <div className="transpilation-content">

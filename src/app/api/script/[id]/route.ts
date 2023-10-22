@@ -1,6 +1,6 @@
 // script/[id]/route.ts
 import { NextResponse } from 'next/server';
-import { write, read,rename } from '../../../dataServices/script';
+import { write, read, rename } from '../../../services/script/crud';
 
 //Returns a script by its name
 export const POST = async (req: Request, { params }: { params: { id: string } }) => {

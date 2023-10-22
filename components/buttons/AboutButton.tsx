@@ -88,7 +88,7 @@ const AboutButton: React.FC = () => {
 
   return (
     <>
-      <button className="btn-about" onClick={handleAboutClick}>About</button>
+      <button className="btn-about"  onClick={handleAboutClick}>About</button>
       {renderAboutModal()}
     </>
   );

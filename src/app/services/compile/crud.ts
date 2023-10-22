@@ -8,7 +8,7 @@ import { join } from 'path';
 export const compileData = async (content: string, id: string) => {
   const timestamp = new Date().toISOString();
   
-  const filename = `${id}.js`; // Sets the name of the script
+  const filename = `${id.split(".")[0]}.js`; // Sets the name of the script
   const filePath = join(__dirname, '../../../../../scripts.js', filename);
   
   try {
@@ -18,7 +18,7 @@ export const compileData = async (content: string, id: string) => {
   }
   
   return {
-    content: `${timestamp}\n${content}`,
+    content: `//${timestamp}\n${content}`,
     filename, // includes the filename in the response
   };
 };

@@ -1,6 +1,6 @@
 
 import { NextResponse } from 'next/server';
-import { rename } from '../../dataServices/script'; 
+import { rename } from '../../services/script/crud'; 
 
 
 //Allows the renaming of a script

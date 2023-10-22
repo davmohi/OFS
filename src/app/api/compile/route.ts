@@ -1,6 +1,6 @@
 // compile/route.ts
 import { NextResponse } from 'next/server';
-import { compileData } from '../../dataServices/compile'; 
+import { compileData } from '../../services/compile/crud'; 
 
 
 //Receives the scrip, sends it to be compiled and the result is returned
