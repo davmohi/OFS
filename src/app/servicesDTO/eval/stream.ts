@@ -1,40 +1,51 @@
 // 'servicesDTO/eval/stream.ts'
-export class Stream<T> {
-    private iterable: Iterable<T>;
+export function getStream() {
+    class Stream<T> {
+        private iterable: Iterable<T>;
+            
+        constructor(iterable: Iterable<T>) {
+            this.iterable = iterable;
+        }
 
-    constructor(iterable: Iterable<T>) {
-        this.iterable = iterable;
+        map<U>(f: (value: T) => U): Stream<U> {
+            function* gen(iterable: Iterable<T>): Iterable<U> {
+                for (const e of iterable) yield f(e);
+            }
+            return new Stream(gen(this.iterable));
+        }
+
+        filter(f: (value: T) => boolean): Stream<T> {
+            function* gen(iterable: Iterable<T>): Iterable<T> {
+                for (const e of iterable) {
+                    if (f(e)) yield e;
+                }
+            }
+            return new Stream(gen(this.iterable));
+        }
+
+        toList(): T[] {
+            const results: T[] = [];
+            for (const value of this.iterable) {
+                results.push(value);
+            }
+            return results;
+        }
     }
     
-    map<U>(f: (value: T) => U): Stream<U> {
-        function* gen(iterable: Iterable<T>): Iterable<U> {
-            for (const e of iterable) yield f(e);
-        }
-        return new Stream(gen(this.iterable));
-    }
-
-    filter(f: (value: T) => boolean): Stream<T> {
-        function* gen(iterable: Iterable<T>): Iterable<T> {
-            for (const e of iterable) {
-                if (f(e)) yield e;
+    function iterate<T>(init: T, nextFn: (value: T) => T, limit: number=10000): Stream<T> {
+        function* generator(): Iterable<T> {
+            let value = init;
+            let count = 0;
+            while (count < limit) {
+                yield value;
+                value = nextFn(value);
+                count++;
             }
         }
-        return new Stream(gen(this.iterable));
+        return new Stream(generator());
     }
-
-    toList(): T[] {
-        return [...this.iterable];
+    return {
+        Stream: Stream,
+        iterate: iterate
     }
-}
-
-// Emulando el combinador iterate de OFS para que devuelva un Stream
-export function iterate<T>(init: T, nextFn: (value: T) => T): Stream<T> {
-    function* generator(): Iterable<T> {
-        let value = init;
-        while (true) {
-            yield value;
-            value = nextFn(value);
-        }
-    }
-    return new Stream(generator());
 }
