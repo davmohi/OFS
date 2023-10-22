@@ -5,7 +5,7 @@ export class Stream<T> {
     constructor(iterable: Iterable<T>) {
         this.iterable = iterable;
     }
-
+    
     map<U>(f: (value: T) => U): Stream<U> {
         function* gen(iterable: Iterable<T>): Iterable<U> {
             for (const e of iterable) yield f(e);
