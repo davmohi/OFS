@@ -457,3 +457,12 @@ a {
   margin: 0 auto;
   display: block; 
 }
+
+.disabled-image {
+  opacity: 1;
+
+}
+
+button:disabled .disabled-image {
+  opacity: 0.3;
+}

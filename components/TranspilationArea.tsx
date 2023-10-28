@@ -38,6 +38,7 @@ const TranspilationArea: React.FC<Props> = ({ transpiledCode, setResponse, fileN
 
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState<boolean>(false);
   const [successMessage, setSuccessMessage] = useState<string>('');
+  const [disableButton, setDisableButton] = useState<boolean>(true);
 
   // Adjust line number container height based on textarea height
   useEffect(() => {
@@ -52,13 +53,15 @@ const TranspilationArea: React.FC<Props> = ({ transpiledCode, setResponse, fileN
       });
   
       resizeObserver.observe(editorTextarea);
-  
+
       return () => {
         resizeObserver.disconnect();
       };
     })()
     :null
-  }, []);
+
+    setDisableButton(transpiledCode.trim() === '');
+  }, [transpiledCode]);
 
   // Adjust textarea height based on its content whenever transpiledCode changes
   useEffect(() => {
@@ -119,8 +122,8 @@ const TranspilationArea: React.FC<Props> = ({ transpiledCode, setResponse, fileN
       <div className="transpilation-header">
         <h3>Transpilation Area</h3>
         <input type="text" value={fileName} readOnly />
-        <button onClick={evaluateCode} title='Evaluar'>
-          <img src="/compile-icon.png" alt="Compile" draggable="false"/>
+        <button onClick={evaluateCode} title='Evaluar' disabled={disableButton}>
+          <img className="disabled-image" src="/compile-icon.png" alt="Compile" draggable="false"/>
         </button>
       </div>
       <div className="transpilation-content">
