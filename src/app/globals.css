@@ -127,7 +127,7 @@
   border-radius: 5px;
   resize: vertical;
   background-color: #a0948c;
-   
+  white-space: pre;
 }
 
 .transpilation-textarea::placeholder{
