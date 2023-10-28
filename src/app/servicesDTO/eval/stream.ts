@@ -22,7 +22,20 @@ export function getStream() {
             }
             return new Stream(gen(this.iterable));
         }
-
+        
+        cut(n: number): Stream<T>{
+            function* gen(iterable: Iterable<T>): Iterable<T> {
+                let count = 0;
+                for (const e of iterable) {
+                    if(count < n){
+                        yield e;
+                        count++;
+                    }
+                    else{break;}
+                }
+            }
+            return new Stream(gen(this.iterable));
+        }
         toList(): T[] {
             const results: T[] = [];
             for (const value of this.iterable) {
