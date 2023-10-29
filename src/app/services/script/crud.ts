@@ -4,7 +4,34 @@ import prisma from "../../../libs/client"
 const filesDirectory = join(process.cwd(), 'scripts');
 
 //Saves the script with the Id
+
 export const createScript = async (name: string, body: string) => {
+  const existingScript = await prisma.script.findUnique({
+    where: { name },
+  });
+
+  if (existingScript) {
+    // Si el script ya existe, actualízalo
+    const updatedScript = await prisma.script.update({
+      where: { name },
+      data: { body },
+    });
+    return updatedScript;
+  } else {
+    // Si el script no existe, créalo
+    const newScript = await prisma.script.create({
+      data: {
+        name,
+        body,
+      },
+    });
+    return newScript;
+  }
+};
+
+
+
+/*export const createScript = async (name: string, body: string) => {
   const script = await prisma.script.create({
       data: {
           name,
@@ -12,7 +39,7 @@ export const createScript = async (name: string, body: string) => {
       }
   });
   return script; // Cambié "createScript" por "script" en el retorno
-}
+}*/
 
 
 //Retrieves and returns a script by its id
