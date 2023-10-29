@@ -32,11 +32,8 @@ const CompileButton: React.FC<CompileButtonProps> = ({ setTranspiledCode, editor
     const compileCode = async () => {
         const isEditorContentEmpty = editorContent.trim() === '';
         const isInputValueEmpty = inputValue.trim() === '';
-
         isEditorContentEmpty
         ?handleCompilationError("The editor content is empty. Please enter code before compiling.")
-        :isInputValueEmpty
-        ?handleCompilationError("The ID field is empty. Please enter an ID before compiling.")
         :(setIsCompiling(true),
         async () => {
             try {
@@ -45,7 +42,7 @@ const CompileButton: React.FC<CompileButtonProps> = ({ setTranspiledCode, editor
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ content: editorContent, id: inputValue })
+                    body: JSON.stringify({ content: editorContent, id: isInputValueEmpty? "undefined" : inputValue})
                 });
                 const data = response.ok ? await response.json() : null;
 
@@ -74,7 +71,7 @@ const CompileButton: React.FC<CompileButtonProps> = ({ setTranspiledCode, editor
                     setIsContentEmptyModalOpen(false);
                 }}
                 title="Warning"
-                content="El contenido del editor o el ID están vacíos. Ingrese el código y una identificación antes de compilar."
+                content="El contenido del editor está vacio. Ingrese el código y una identificación antes de compilar."
             />
         </div>
     );

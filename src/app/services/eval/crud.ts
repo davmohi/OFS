@@ -2,7 +2,7 @@
 import fs from 'fs/promises';
 import { join } from 'path';
 import vm from 'vm';
-import { getStream } from '../../servicesDTO/eval/stream';
+import { getStream } from '../../utils/stream';
 const { Stream, iterate } = getStream();
 const scriptsDirectory = join(process.cwd(), 'scripts.js');
 

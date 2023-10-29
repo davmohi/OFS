@@ -1,6 +1,6 @@
 // script/[id]/route.ts
 import { NextResponse } from 'next/server';
-import { createScript, read, rename } from '../../../services/script/crud';
+import { saveScript, readScript, renameScript } from '../../../services/script/crud';
 
 //Returns a script by its name
 export const POST = async (req: Request, { params }: { params: { id: string } }) => {
@@ -12,7 +12,7 @@ export const POST = async (req: Request, { params }: { params: { id: string } })
 
     return !id || !content
     ?NextResponse.json({ message: "ID y contenido son requeridos" }, { status: 400 })
-    :( await createScript(id, content),
+    :( await saveScript(id, content),
     NextResponse.json({ message: "Script creado/actualizado con éxito" }, { status: 200 }))
 
   } catch (error) {
@@ -25,7 +25,7 @@ export const POST = async (req: Request, { params }: { params: { id: string } })
 export const GET = async (req: Request, { params }: { params: { id: string } }) => {
   try {
     const id = params.id;
-    const content = await read(id);
+    const content = await readScript(id);
     
     return NextResponse.json({ content }, { status: 200 });
     

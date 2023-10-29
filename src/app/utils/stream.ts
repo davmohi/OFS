@@ -1,4 +1,4 @@
-// 'servicesDTO/eval/stream.ts'
+// 'utils/eval/stream.ts'
 export function getStream() {
     class Stream<T> {
         private iterable: Iterable<T>;
