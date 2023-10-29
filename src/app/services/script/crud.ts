@@ -1,12 +1,17 @@
 import { promises as fs } from 'fs';
 import { join } from 'path';
-
+import prisma from "../../../libs/client"
 const filesDirectory = join(process.cwd(), 'scripts');
 
 //Saves the script with the Id
-export const write = async(id: string, content: string) => {
-  const filePath = join(filesDirectory, id);
-  await fs.writeFile(filePath, content, 'utf8');
+export const createScript = async (name: string, body: string) => {
+  const script = await prisma.script.create({
+      data: {
+          name,
+          body
+      }
+  });
+  return script; // Cambié "createScript" por "script" en el retorno
 }
 
 
