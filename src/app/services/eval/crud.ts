@@ -13,7 +13,11 @@ export const evalData = async (fileName: string) => {
         await fs.access(scriptPath);
 
         // Read the target script's content
-        const scriptContent = await fs.readFile(scriptPath, 'utf8');
+        let scriptContent = await fs.readFile(scriptPath, 'utf8');
+
+        if (!scriptContent.endsWith(".toList();")){
+            scriptContent = scriptContent.slice(0, -1) + ".toList();";
+        }
         // Define your context
         const loggedValues: any[] = [];
         
@@ -28,9 +32,13 @@ export const evalData = async (fileName: string) => {
         };
         const script = new vm.Script(scriptContent);
         const sandbox = vm.createContext(context);  // Create a context for the script
-
+        
         script.runInNewContext(sandbox);  // This will execute the script in the context
 
+        // If the final value is a Stream, invoke toList
+        // if (sandbox._finalValue instanceof Stream) {
+        //     sandbox._finalValue.toList();
+        // }
 
         return loggedValues.join('\n');  // Return the values that were logged
     } catch (error) {
