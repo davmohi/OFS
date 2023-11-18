@@ -1,13 +1,15 @@
 // api/route.ts
 import { NextResponse } from 'next/server';
-import  { AboutService }  from '../../services/about/crud';
+import  { readAbout }  from '../../services/about/crud';
 
 //Returns the information of the about section
-export const GET = async (req: Request) => {
+export const GET = async () => {
   try {
-    const aboutService = new AboutService();
-    const aboutData = aboutService.getAboutData();
+    
+    const aboutData = await readAbout();
+
     return NextResponse.json(aboutData, { status: 200 });
+
   } catch (error) {
     return NextResponse.json({ message: "Error", error }.error, { status: 500 });
   }

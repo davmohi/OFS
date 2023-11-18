@@ -14,3 +14,19 @@ model Script {
   name String @unique
   body String
 }
+
+model About {
+   id String   @id @default(auto()) @map("_id") @db.ObjectId
+   members Json
+   course String
+   project String
+   semester String
+   year String
+   school String
+   university String
+}
+
+model Keywords {
+  id String   @id @default(auto()) @map("_id") @db.ObjectId
+  keywords Json
+}

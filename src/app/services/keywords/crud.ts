@@ -1,9 +1,15 @@
-import * as keywordsData from '../../servicesDTO/keywords/keywords.json';
 
-export class KeywordsService {
-  private data = keywordsData;
+import prisma from "../../../libs/client"
 
-  getKeywordsData() {
-    return this.data;
+
+export const readKeywords = async () => {
+  const existingKeywords = await prisma.keywords.findUnique({
+    where: { id:'65593750ad1bff406128ee52'},
+  });
+
+  if (existingKeywords) {
+    return existingKeywords;
+  } else {
+    throw new Error("El documento no se encontró en la base de datos.");
   }
 }
