@@ -50,8 +50,8 @@ const CompileButton: React.FC<CompileButtonProps> = ({ setTranspiledCode, editor
               
                 if (data.error) {
                   console.error(`Compilation error: ${data.error}`);
-                  console.log(data.error);
                   setErrorTraspilation(true);
+                  setWrrorMessageTraspilation(data.error);
                 } else {
                   setFileName(data?.filename || '');
                   setTranspiledCode(data?.content || '');

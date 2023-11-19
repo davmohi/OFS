@@ -15,6 +15,11 @@ export const POST = async (req: Request) => {
     // Incluir content y filename en la respuesta
     return NextResponse.json({ content: responseData.content, filename: responseData.filename }, { status: 200 });
   } catch (error) {
-    return NextResponse.json({ message: "Error", error }, { status: 500 });
+    console.error('Error en la compilación:', error);
+    let errorMessage = '';
+    if (error instanceof Error) {
+      errorMessage = error.message;
+    }
+    return NextResponse.json({ message: "Error", error:errorMessage }, { status: 500 });
   }
 }

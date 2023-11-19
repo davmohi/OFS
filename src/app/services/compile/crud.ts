@@ -21,7 +21,7 @@ export const compileData = async (content: string, id: string) => {
 
     if (!response.ok) {
       console.error('Error en el servidor Prolog:', response.statusText);
-      console.log(response);
+      console.log('ccccccccccccccccccccccccccccc',response);
 
       // Aquí, puedes acceder al mensaje de error específico desde el cuerpo de la respuesta
       const errorResponse = await response.json();
@@ -31,13 +31,14 @@ export const compileData = async (content: string, id: string) => {
     }
 
     const data = await response.json();
-
+    if(data.error){
+      throw new Error(data.error);
+    }
     return {
       content: data.content,
       filename,
     };
   } catch (error) {
-    console.error('Error en la compilación:', error);
     throw error; // Relanza la excepción para que sea capturada por el bloque catch en el backend
   }
 };
