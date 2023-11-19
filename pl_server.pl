@@ -23,10 +23,10 @@ handle_retrieve(Request) :-
         atom_codes(FileContent, Codes),
          (catch(ofs_sudo_grammar_1pm:ofs_program(Codes, Ast), 
          Exception, 
-         handle_error(Exception, Codes, ErrorMessage))
+         handle_error(Exception, Codes))
      -> generator(Ast, JSCodeString),
         reply_json_dict(_{content: JSCodeString})
-     ;  reply_json_dict(_{error: ErrorMessage})
+     ;  reply_json_dict(_{error: "Error processing file."})
      )
       ;  reply_json_dict(_{error: "File not found."})
     ).
@@ -51,12 +51,9 @@ server(Port) :-
     format('*** Serving on port ~d *** ~n', [Port]),
     server(Port).
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-handle_error(parser_error(NoAceptable), Data, ErrorMessage) :- !,
-    format('Parser Error: ~q with Data: ~q~n', [NoAceptable, Data]),
-    ErrorMessage is "Parser Error".
-handle_error(generate_error(NoAceptable), Data, ErrorMessage) :- !,
-    format('Generate Error: ~q with Data: ~q~n', [NoAceptable, Data]),
-    ErrorMessage is "Generate Error".
-handle_error(UnknownError, Data, ErrorMessage) :-
-    format('Parser Error: ~q with Data: ~q~n', [UnknownError, Data]),
-    ErrorMessage is "Parser Error".
+handle_error(parser_error(NoAceptable), Data) :- !,
+    format('Parser Error: ~q with Data: ~q~n', [NoAceptable, Data]).
+handle_error(generate_error(NoAceptable), Data) :- !,
+    format('Generate Error: ~q with Data: ~q~n', [NoAceptable, Data]).
+handle_error(UnknownError, Data) :-
+    format('Parser Error: ~q with Data: ~q~n', [UnknownError, Data]).
