@@ -15,7 +15,8 @@ const CompileButton: React.FC<CompileButtonProps> = ({ setTranspiledCode, editor
     const [isCompiling, setIsCompiling] = useState(false);
     const [isContentEmptyModalOpen, setIsContentEmptyModalOpen] = useState(false);
     const [isInputValueEmptyModalOpen, setIsInputValueEmptyModalOpen] = useState(false);
-
+    const [errorTraspilation, setErrorTraspilation] = useState(false);
+    const [errorMessageTraspilation, setWrrorMessageTraspilation] = useState('');
     // Function to show a modal with a message
     const showModal = (message: string) => {
         setIsContentEmptyModalOpen(true);
@@ -38,21 +39,28 @@ const CompileButton: React.FC<CompileButtonProps> = ({ setTranspiledCode, editor
         async () => {
             try {
                 const response = await fetch('/api/compile', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ content: editorContent, id: isInputValueEmpty? "undefined" : inputValue})
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify({ content: editorContent, id: isInputValueEmpty ? "undefined" : inputValue })
                 });
-                const data = response.ok ? await response.json() : null;
+              
+                const data = await response.json();
+              
+                if (data.error) {
+                  console.error(`Compilation error: ${data.error}`);
+                  console.log(data.error);
+                  setErrorTraspilation(true);
+                } else {
+                  setFileName(data?.filename || '');
+                  setTranspiledCode(data?.content || '');
+                }
+              } catch (error) {
+                console.error('Network error:', error);
+                setErrorTraspilation(true);
 
-                setFileName(data?.filename || '');
-                setTranspiledCode(data?.content || '');
-
-                !response.ok && console.error("Compilation error");
-            } catch (error) {
-                console.error("Compilation error", error);
-            } finally {
+              } finally {
                 setIsCompiling(false);
             }
         })()
@@ -72,6 +80,14 @@ const CompileButton: React.FC<CompileButtonProps> = ({ setTranspiledCode, editor
                 }}
                 title="Warning"
                 content="El contenido del editor está vacio. Ingrese el código y una identificación antes de compilar."
+            />
+            <Modal
+                isOpen={errorTraspilation}
+                onClose={() => {
+                    setErrorTraspilation(false);
+                }}
+                title="Warning"
+                content={`Error: ${errorMessageTraspilation}.`}
             />
         </div>
     );
