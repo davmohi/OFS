@@ -1,7 +1,7 @@
 %%% Archivo: ofs_grammar.pl %%%%%%%%%%%%%%%%%
 
-:- module(generator, [
-    ofs_grammar/1,
+:- module(ofs_grammar, [
+    ofs_grammar/1
 ]).
 
 
@@ -10,7 +10,7 @@
 :- use_module(utils).
 :- use_module(parser).
 
-ofs_grammar(Filename) :-
+ofs_grammar(Codes) :-
    read_file_to_codes(Filename, Codes, []),
    ofs_program(Codes, Ast),!,
    format('*** Parser of ~s was ok! ***\n', [Filename]),

@@ -5,7 +5,8 @@
 :- use_module(library(http/http_path)).
 :- use_module(library(http/http_parameters)).
 :- use_module(library(http/html_write)).
-:- use_module(ofs_sudo_grammar_1pm).
+:- use_module(ofs_grammar).
+:- use_module(generator).
 
 % URL handlers.
 :- http_handler('/retrieve', handle_retrieve, [method(get)]).
@@ -21,7 +22,7 @@ handle_retrieve(Request) :-
     ( exists_file(FullPath) 
       -> read_file_to_string(FullPath, FileContent, []),
         atom_codes(FileContent, Codes),
-         (catch(ofs_sudo_grammar_1pm:ofs_program(Codes, Ast), 
+         (catch(ofs_grammar:ofs_program(Codes, Ast), 
          Exception, 
          handle_error(Exception, Codes))
      -> generator(Ast, JSCodeString),

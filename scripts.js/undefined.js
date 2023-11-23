@@ -1,1 +1,9 @@
-a
+/*
+ test_case_4.ofs
+ ternary
+ string
+*/
+
+const printIt = it -> console.log(it);
+const parity_map_50 = [* 0, n -> n + 1] >> [? n -> (n != 0) ? 'odd' : 'even'] >> [! 50];
+parity_map_50 >> [> printIt];
