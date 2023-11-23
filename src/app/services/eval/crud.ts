@@ -15,9 +15,9 @@ export const evalData = async (fileName: string) => {
         // Read the target script's content
         let scriptContent = await fs.readFile(scriptPath, 'utf8');
 
-        if (!scriptContent.endsWith(".toList();")){
-            scriptContent = scriptContent.slice(0, -1) + ".toList();";
-        }
+        // if (!scriptContent.endsWith(".toList();")){
+        //     scriptContent = scriptContent.slice(0, -1) + ".toList();";
+        // }
         // Define your context
         const loggedValues: any[] = [];
         

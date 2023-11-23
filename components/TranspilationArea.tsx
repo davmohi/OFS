@@ -101,7 +101,7 @@ const TranspilationArea: React.FC<Props> = ({ transpiledCode, setResponse, fileN
       });
 
       response.ok
-      ?(setSuccessMessage('Eval_Fake read'),
+      ?(setSuccessMessage('Evaluado exitosamente'),
       setIsSuccessModalOpen(true))
       :(()=>{
         throw new Error('Error al evaluar el código');
