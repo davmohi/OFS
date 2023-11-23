@@ -1,5 +1,9 @@
 %%% Archivo: ofs_grammar.pl %%%%%%%%%%%%%%%%%
 
+:- module(generator, [
+    ofs_grammar/1,
+]).
+
 
 :- use_module(library(readutil)).
 :- use_module(generator).
