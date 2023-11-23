@@ -40,7 +40,7 @@ generator(StatementList, JSCodeString) :-
     options(splash, Splash),
     with_output_to(string(Str), (
         generate_line_comment(comment(Splash)),
-        write_ast(StatementList),
+        % write_ast(StatementList),
         forall(member(Statement, StatementList), generate_statement(Statement))
     )),
     string_concat(Str, "\n", JSCodeString).

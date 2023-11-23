@@ -47,6 +47,7 @@ export const compileData = async (content: string, id: string) => {
     if(data.error){
       throw new Error(data.error);
     }
+    await writeFile(filePath, data.content, 'utf-8');
     return {
       content: data.content,
       filename,
